@@ -17,4 +17,6 @@ let tmp = [
     "Biểu diễn nghệ thuật dân gian",
     "Thủy cung, vui chơi giải trí",
     "Tổ hợp thể thao, đi dạo ngắm cảnh",
+    "Vui chơi, giải trí",
+    "Công viên, sở thú, vui chơi, giải trí",
 ]
