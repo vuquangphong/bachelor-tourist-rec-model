@@ -1,0 +1,189 @@
+[
+    {
+        "attraction_id": "6568b440-c0a5-11ed-8892-04ea5650b820",
+        "name": "Công viên Thống Nhất",
+        "category": "Đi dạo, ngắm cảnh",
+        "rating": 4.3,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 21.0125142,
+        "longitude": 105.8451488
+    },
+    {
+        "attraction_id": "c2897c4a-c0a5-11ed-bef8-04ea5650b820",
+        "name": "The Sipping Bar - Waterfront",
+        "category": "Đồ uống, thư giãn",
+        "rating": 4.4,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 21.0089943,
+        "longitude": 105.8445229
+    },
+    {
+        "attraction_id": "e89c6c33-c0a5-11ed-8cfe-04ea5650b820",
+        "name": "Industry Cafe",
+        "category": "Đồ uống, thư giãn",
+        "rating": 4.0,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 21.0122156,
+        "longitude": 105.8465458
+    },
+    {
+        "attraction_id": "15bcb63b-c0a6-11ed-838c-04ea5650b820",
+        "name": "Ưu Đàm Chay",
+        "category": "Ẩm thực chay",
+        "rating": 4.4,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 21.0182286,
+        "longitude": 105.8477127
+    },
+    {
+        "attraction_id": "5433456c-c0a6-11ed-b982-04ea5650b820",
+        "name": "MONO Coffee Lab",
+        "category": "Đồ uống, thư giãn",
+        "rating": 4.6,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 21.0176114,
+        "longitude": 105.848005
+    },
+    {
+        "attraction_id": "6b48d7df-c0a6-11ed-b227-04ea5650b820",
+        "name": "Highlands Coffee Trần Nhân Tông",
+        "category": "Đồ uống, thư giãn",
+        "rating": 4.6,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 21.0169914,
+        "longitude": 105.8486247
+    },
+    {
+        "attraction_id": "d266c14f-c0a6-11ed-a9f0-04ea5650b820",
+        "name": "Phở Thìn 13 Lò Đúc",
+        "category": "Ẩm thực, nghỉ ngơi",
+        "rating": 4.2,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 21.0177407,
+        "longitude": 105.8561734
+    },
+    {
+        "attraction_id": "08e6b3d4-c0a7-11ed-9475-04ea5650b820",
+        "name": "Vườn Hoa Pasteur",
+        "category": "Công viên, đi dạo, ngắm cảnh",
+        "rating": 4.2,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 21.014188,
+        "longitude": 105.8589426
+    },
+    {
+        "attraction_id": "71cebfff-c0a7-11ed-aa79-04ea5650b820",
+        "name": "Highlands Coffee Lò Đúc",
+        "category": "Đồ uống, thư giãn",
+        "rating": 4.2,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 21.0134542,
+        "longitude": 105.8580512
+    },
+    {
+        "attraction_id": "85183354-c0a7-11ed-b671-04ea5650b820",
+        "name": "Vincom Center Bà Triệu",
+        "category": "Trung tâm thương mại",
+        "rating": 4.4,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 21.0106695,
+        "longitude": 105.8486377
+    },
+    {
+        "attraction_id": "5cc88ca1-c0a8-11ed-906b-04ea5650b820",
+        "name": "Bánh Cuốn Bà Hoành",
+        "category": "Ẩm thực, nghỉ ngơi",
+        "rating": 4.1,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 21.0145324,
+        "longitude": 105.8469658
+    },
+    {
+        "attraction_id": "93a4b982-c0a8-11ed-86cd-04ea5650b820",
+        "name": "Vua Chả Cá Mai Hắc Đế",
+        "category": "Ẩm thực, nghỉ ngơi",
+        "rating": 4.2,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 21.0138403,
+        "longitude": 105.8479452
+    },
+    {
+        "attraction_id": "bc118f1d-c0a8-11ed-93da-04ea5650b820",
+        "name": "Starbucks Ba Trieu",
+        "category": "Đồ uống, thư giãn",
+        "rating": 4.1,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 21.0100094,
+        "longitude": 105.8487624
+    },
+    {
+        "attraction_id": "0633986f-c0a9-11ed-9df7-04ea5650b820",
+        "name": "Highlands Coffee Trần Đại Nghĩa",
+        "category": "Đồ uống, thư giãn",
+        "rating": 4.3,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 21.0046784,
+        "longitude": 105.8435213
+    },
+    {
+        "attraction_id": "289844eb-c0a9-11ed-bf72-04ea5650b820",
+        "name": "Công viên Tuổi Trẻ Thủ Đô",
+        "category": "Công viên, đi dạo, ngắm cảnh",
+        "rating": 4.1,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 21.0041536,
+        "longitude": 105.8551999
+    },
+    {
+        "attraction_id": "8e29749d-c0a9-11ed-a16f-04ea5650b820",
+        "name": "Vincom Mega Mall Times City",
+        "category": "Trung tâm thương mại",
+        "rating": 4.4,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 20.9955648,
+        "longitude": 105.868612
+    },
+    {
+        "attraction_id": "c004dc1b-c0a9-11ed-969a-04ea5650b820",
+        "name": "VinKE & Thủy Cung Times City",
+        "category": "Thủy cung, vui chơi giải trí",
+        "rating": 4.4,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Hai Bà Trưng",
+        "latitude": 20.9972722,
+        "longitude": 105.866725
+    }
+]

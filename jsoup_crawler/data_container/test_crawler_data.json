@@ -1,0 +1,389 @@
+[
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Phố Cổ Hà Nội",
+        "rating": 45,
+        "id": "a8621915-e4f0-4a35-be1a-191e9f94ef2f",
+        "category": "Khu vực đi dạo tham quan di tích lịch sử, Khu lân cận",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Hồ Hoàn Kiếm",
+        "rating": 45,
+        "id": "61b9c621-9626-4fdb-a658-c264dc38676e",
+        "category": "Vùng nước",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Đường Tàu",
+        "rating": 45,
+        "id": "2e01731f-2817-4c47-a750-fe972758bb0d",
+        "category": "Điểm thu hút khách tham quan & thắng cảnh",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Văn Miếu Quốc Tử Giám",
+        "rating": 45,
+        "id": "d39d690c-3df0-47c6-84d5-c4acc0a0b6cc",
+        "category": "Địa điểm tôn giáo, Địa điểm lịch sử",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Nhà Hát Lớn Hà Nội",
+        "rating": 40,
+        "id": "07ec0332-a49b-48fc-99dc-8718e503f983",
+        "category": "Rạp hát",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Hỏa Lò",
+        "rating": 40,
+        "id": "a1205bb3-fc11-476f-b35c-163c0390a1c5",
+        "category": "Địa điểm lịch sử",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Lăng Chủ Tịch Hồ Chí Minh",
+        "rating": 40,
+        "id": "0d6795fd-38e7-486d-af39-389c2d983fe2",
+        "category": "Địa điểm lịch sử",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Thang Long Water Puppet",
+        "rating": 40,
+        "id": "561b2c43-1151-4906-9188-719addf482f3",
+        "category": "Nhà hát & biểu diễn, Rạp hát",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Imperial Citadel of Thang Long",
+        "rating": 40,
+        "id": "7a38902d-3cd5-453d-acce-6242b31ed435",
+        "category": "Địa điểm lịch sử, Điểm thu hút khách tham quan & thắng cảnh",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Nhà Thờ Lớn",
+        "rating": 40,
+        "id": "b02b085f-b057-4161-a3f0-081c001e23dd",
+        "category": "Địa điểm tôn giáo, Điểm thu hút khách tham quan & thắng cảnh",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Sofitel Legend Metropole Hà Nội",
+        "rating": 50,
+        "id": "d5c4020f-7aad-4125-a123-09de52a88913",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "La Siesta Classic Ma May",
+        "rating": 50,
+        "id": "f286dac8-651d-40aa-857b-531a462ab0a1",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Khách sạn Conifer Boutique",
+        "rating": 45,
+        "id": "84b7eb99-7db4-4c1c-a120-dda24fa4fc8c",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Lotte Hotel Hanoi",
+        "rating": 50,
+        "id": "a5539497-de96-493c-8da6-5f8e2be31645",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "JW Marriott Hotel Hanoi",
+        "rating": 50,
+        "id": "1c523fe6-9ec2-4850-9154-3b20a1fd1d0f",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Hotel de l'Opera Hanoi",
+        "rating": 45,
+        "id": "0d221459-b49c-486a-afc9-c44964f3f0a1",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "La Sinfonía del Rey Hotel & Spa",
+        "rating": 50,
+        "id": "79b1c47c-05cd-4f9f-9a8a-98eb9087dc3d",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Khách sạn Splendid Star Grand",
+        "rating": 50,
+        "id": "6c8baaf4-7e70-4c8f-8dde-eac784935d50",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "The Oriental Jade Hotel",
+        "rating": 50,
+        "id": "4c5372fd-0078-45d1-941f-fb72f69119b1",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Bun Cha Huong Lien",
+        "rating": 40,
+        "id": "59eef66d-f9ba-43f5-922b-8bc9c88fc15e",
+        "category": "$ \u2022 Kiểu Việt, Kiểu Á",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Giảng Cafe",
+        "rating": 45,
+        "id": "cebb9a06-4c69-41e8-8e6f-7a7353ec1366",
+        "category": "$ \u2022 Cà phê, Kiểu Á",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Bánh Cuốn Gia Truyền Thanh Vân",
+        "rating": 40,
+        "id": "7fae29ed-a566-4723-a162-9689d9760f3d",
+        "category": "$ \u2022 Kiểu Việt, Kiểu Á",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Cha Ca Thang Long",
+        "rating": 45,
+        "id": "11f8e590-649b-4307-be96-bddfb83f8e27",
+        "category": "$$ - $$$ \u2022 Hải sản, Kiểu Á, Kiểu Việt",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Pizza 4P's Trang Tien",
+        "rating": 45,
+        "id": "4adb1b7d-e4e6-46ef-8ff9-5eed86b2f245",
+        "category": "$$ - $$$ \u2022 Kiểu Ý, Kiểu Nhật, Món kết hợp",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Kem Trang Tien",
+        "rating": 40,
+        "id": "d89e0bca-2cf6-41a9-baa4-53dd949d0d20",
+        "category": "$ \u2022 Món tráng miệng, Đồ ăn nhanh",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Phở Lý Quốc Sư",
+        "rating": 40,
+        "id": "45608863-cecd-4a42-916e-0243d444a8f4",
+        "category": "$ \u2022 Kiểu Á, Kiểu Việt, Súp",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Bánh Mì 25",
+        "rating": 45,
+        "id": "ac094e0e-63a6-4364-8037-e176dd26c90a",
+        "category": "$ \u2022 Đồ ăn nhanh, Kiểu Á, Kiểu Việt",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Bún Bò Nam Bộ",
+        "rating": 45,
+        "id": "b121ba5b-3769-41e8-90fd-142ce5026005",
+        "category": "$ \u2022 Kiểu Á, Kiểu Việt",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "The Hanoi Social Club",
+        "rating": 45,
+        "id": "1a4182d6-a6ee-4d8d-9bb2-95be9dd56499",
+        "category": "$$ - $$$ \u2022 Quầy bar, Cà phê, Kiểu Âu",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Chua Tran Quoc",
+        "rating": 40,
+        "id": "2b9f4b1d-265a-484f-bdc9-776440f695bc",
+        "category": "Địa điểm tôn giáo",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Đền Ngọc Sơn",
+        "rating": 40,
+        "id": "1cbee3c3-96e4-4b34-a993-f641c28746a9",
+        "category": "Địa điểm tôn giáo",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Perfume Pagoda",
+        "rating": 40,
+        "id": "21315135-da0e-4a39-b9fa-b6c61054f5fc",
+        "category": "Địa điểm tôn giáo",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Đền Quán Thánh",
+        "rating": 40,
+        "id": "a8c10581-c548-4fe8-9281-c9fdbadeaaa1",
+        "category": "Địa điểm tôn giáo",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Quán Sứ Pagoda",
+        "rating": 40,
+        "id": "40463f33-0bd2-4ff8-aea4-79dc652ae8d9",
+        "category": "Địa điểm tôn giáo",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Vietnam Museum of Ethnology",
+        "rating": 45,
+        "id": "5300de6a-6984-4f54-a1f1-a063f47d5ada",
+        "category": "Viện bảo tàng lịch sử",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Vietnam Military History Museum",
+        "rating": 40,
+        "id": "dc06635b-4b90-4e7f-ab09-9190fa053c7e",
+        "category": "Viện bảo tàng quân đội",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Bảo tàng Phụ nữ Việt Nam",
+        "rating": 45,
+        "id": "9b0926c8-d8e9-4a37-a2a7-2caccbe231ac",
+        "category": "Viện bảo tàng chuyên ngành",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "B52 Victory Museum",
+        "rating": 40,
+        "id": "7f052a66-9c77-43d7-ba17-f5e212f2ba16",
+        "category": "Viện bảo tàng chuyên ngành",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Bảo Tàng Công An Hà Nội",
+        "rating": 45,
+        "id": "214193e2-d096-4c79-86c9-46cf8381f69e",
+        "category": "Viện bảo tàng chuyên ngành",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Craft-Link",
+        "rating": 45,
+        "id": "87154b83-abe2-4dab-94de-785171c13bc7",
+        "category": "Cửa hàng đặc sản & cửa hàng quà tặng",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Cửa Hàng Đồ Gốm Cerender",
+        "rating": 50,
+        "id": "8fd66dad-f43f-4952-b6a6-69caf2250dce",
+        "category": "Cửa hàng đặc sản & cửa hàng quà tặng",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Collective Memory",
+        "rating": 50,
+        "id": "3d7fd918-69a8-4e1e-9cf1-ddf68c06290d",
+        "category": "Phòng trưng bày nghệ thuật, Trung tâm mua sắm",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Zó Project",
+        "rating": 45,
+        "id": "b4e20672-7d01-499a-9de1-0e46b9309398",
+        "category": "Phòng trưng bày nghệ thuật, Buổi học & hội thảo",
+        "longitude": 0
+    },
+    {
+        "price": 0,
+        "latitude": 0,
+        "name": "Tired City Bao Khanh",
+        "rating": 50,
+        "id": "8b9455eb-ef84-4d7b-8c4f-5f7d87a6a5bc",
+        "category": "Cửa hàng đặc sản & cửa hàng quà tặng",
+        "longitude": 0
+    }
+]

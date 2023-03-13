@@ -1,0 +1,68 @@
+[
+    {
+        "attraction_id": "0f82dcb4-c0ab-11ed-b5c2-04ea5650b820",
+        "name": "Nhà văn hóa quận Thanh Xuân",
+        "category": "Tổ hợp thể thao, đi dạo ngắm cảnh",
+        "rating": 4.1,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Thanh Xuân",
+        "latitude": 21.0028845,
+        "longitude": 105.7964961
+    },
+    {
+        "attraction_id": "147aa434-c0ab-11ed-bf11-04ea5650b820",
+        "name": "Bún Bò Huế Ngự Uyển",
+        "category": "Ẩm thực, nghỉ ngơi",
+        "rating": 4.9,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Thanh Xuân",
+        "latitude": 20.9986729,
+        "longitude": 105.8014333
+    },
+    {
+        "attraction_id": "5918f6b8-c0ab-11ed-9aea-04ea5650b820",
+        "name": "Trill Rooftop Cafe",
+        "category": "Đồ uống, thư giãn",
+        "rating": 4.2,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Thanh Xuân",
+        "latitude": 21.0027447,
+        "longitude": 105.8043097
+    },
+    {
+        "attraction_id": "72b42a78-c0ab-11ed-aaf6-04ea5650b820",
+        "name": "Trung tâm Nghệ thuật đương đại Vincom",
+        "category": "Triển lãm, nghệ thuật",
+        "rating": 4.6,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Thanh Xuân",
+        "latitude": 21.0024828,
+        "longitude": 105.814882
+    },
+    {
+        "attraction_id": "b374fa84-c0ab-11ed-b03d-04ea5650b820",
+        "name": "Vinhomes Royal City",
+        "category": "Trung tâm thương mại",
+        "rating": 4.5,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Thanh Xuân",
+        "latitude": 21.0019035,
+        "longitude": 105.8155521
+    },
+    {
+        "attraction_id": "d6e1ea89-c0ab-11ed-af77-04ea5650b820",
+        "name": "Vinhomes Royal City",
+        "category": "Trung tâm thương mại",
+        "rating": 4.5,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Thanh Xuân",
+        "latitude": 21.0019035,
+        "longitude": 105.8155521
+    }
+]
