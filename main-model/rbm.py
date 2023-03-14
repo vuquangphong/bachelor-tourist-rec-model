@@ -1,6 +1,10 @@
 import pandas as pd
 import numpy as np
-import tensorflow as tf
+
+# import tensorflow as tf  #TODO: disable v2 vì code phần lớn ở v1
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior() 
+
 from utils import Util
 import matplotlib
 matplotlib.use('agg')
@@ -9,33 +13,43 @@ import os
 from sklearn import preprocessing
 from IPython.display import display
 
+
+'''
+# TODO: xem lại mục đích của các hàm và cơ chế bên trong RBMs
+RBM class which implement RBM model for the system
+'''
 class RBM(object):
     '''
-    Class definition for a simple RBM
+    constructor
+    # TODO: xem lại mục đích các properties
+    # ? alpha
+    # ? H
+    # ? num_vis
     '''
     def __init__(self, alpha, H, num_vis):
         self.alpha = alpha
         self.num_hid = H
-        self.num_vis = num_vis # might face an error here, call preprocess if you do
+        self.num_vis = num_vis
         self.errors = []
         self.energy_train = []
         self.energy_valid = []
 
 
+    '''
+    # TODO: xem lại mục đích các tham số
+    # TODO: xem lại cơ chế, luồng training
+    '''
     def training(self, train, valid, user, epochs, batchsize, free_energy, verbose, filename):
-        '''
-        Function where RBM training takes place
-        '''
-        vb = tf.keras.Input(shape=(self.num_vis), dtype=tf.float32) # Number of unique books
-        hb = tf.keras.Input(shape=(self.num_hid), dtype=tf.float32) # Number of features were going to learn
-        W = tf.keras.Input(shape=(self.num_vis, self.num_hid), dtype=tf.float32)  # Weight Matrix
-        v0 = tf.keras.Input(shape=(None, self.num_vis), dtype=tf.float32)
+        vb = tf.placeholder(tf.float32, [self.num_vis]) # Number of unique books
+        hb = tf.placeholder(tf.float32, [self.num_hid]) # Number of features were going to learn
+        W = tf.placeholder(tf.float32, [self.num_vis, self.num_hid])  # Weight Matrix
+        v0 = tf.placeholder(tf.float32, [None, self.num_vis])
 
         print("Phase 1: Input Processing")
         _h0 = tf.nn.sigmoid(tf.matmul(v0, W) + hb)  # Visible layer activation
         # Gibb's Sampling
         h0 = tf.nn.relu(tf.sign(_h0 - tf.random_uniform(tf.shape(_h0))))
-
+        
         print("Phase 2: Reconstruction")
         _v1 = tf.nn.sigmoid(tf.matmul(h0, tf.transpose(W)) + vb)  # Hidden layer activation
         v1 = tf.nn.relu(tf.sign(_v1 - tf.random_uniform(tf.shape(_v1))))
@@ -45,7 +59,7 @@ class RBM(object):
         w_pos_grad = tf.matmul(tf.transpose(v0), h0)
         w_neg_grad = tf.matmul(tf.transpose(v1), h1)
 
-        # Calculate the Contrastive Divergence to maximize
+        # Calculate the Contrastive Divergence (CD) to maximize
         CD = (w_pos_grad - w_neg_grad) / tf.cast(tf.shape(v0)[0], tf.float32)
 
         # Create methods to update the weights and biases
@@ -60,6 +74,7 @@ class RBM(object):
         # Initialize our Variables with Zeroes using Numpy Library
         # Current weight
         cur_w = np.zeros([self.num_vis, self.num_hid], np.float32)
+        
         # Current visible unit biases
         cur_vb = np.zeros([self.num_vis], np.float32)
 
@@ -83,7 +98,9 @@ class RBM(object):
 
         print("Training RBM with {0} epochs and batch size: {1}".format(epochs, batchsize))
         print("Starting the training process")
+        
         util = Util()
+        
         for i in range(epochs):
             for start, end in zip(range(0, len(train), batchsize), range(batchsize, len(train), batchsize)):
                 batch = train[start:end]
@@ -98,21 +115,28 @@ class RBM(object):
                 prv_hb = cur_hb
 
             if valid:
-                etrain = np.mean(util.free_energy(train, cur_w, cur_vb, cur_hb))
+                etrain = np.mean(util.free_energy(np.transpose(train[0]), cur_w, cur_vb, cur_hb))
                 self.energy_train.append(etrain)
-                evalid = np.mean(util.free_energy(valid, cur_w, cur_vb, cur_hb))
+
+                evalid = np.mean(util.free_energy(valid[0], cur_w, cur_vb, cur_hb))
                 self.energy_valid.append(evalid)
+            
             self.errors.append(sess.run(err_sum, feed_dict={
-                          v0: train, W: cur_w, vb: cur_vb, hb: cur_hb}))
+                          v0: np.transpose(train[0]), W: cur_w, vb: cur_vb, hb: cur_hb}))
+            
             if verbose:
                 print("Error after {0} epochs is: {1}".format(i+1, self.errors[i]))
             elif i % 10 == 9:
                 print("Error after {0} epochs is: {1}".format(i+1, self.errors[i]))
+        
         if not os.path.exists('rbm_models'):
             os.mkdir('rbm_models')
+        
         filename = 'rbm_models/'+filename
+        
         if not os.path.exists(filename):
             os.mkdir(filename)
+        
         np.save(filename+'/w.npy', prv_w)
         np.save(filename+'/vb.npy', prv_vb)
         np.save(filename+'/hb.npy',prv_hb)
@@ -120,22 +144,27 @@ class RBM(object):
         if free_energy:
             print("Exporting free energy plot")
             self.export_free_energy_plot(filename)
+        
         print("Exporting errors vs epochs plot")
         self.export_errors_plot(filename)
         inputUser = [train[user]]
         # Feeding in the User and Reconstructing the input
         hh0 = tf.nn.sigmoid(tf.matmul(v0, W) + hb)
         vv1 = tf.nn.sigmoid(tf.matmul(hh0, tf.transpose(W)) + vb)
-        feed = sess.run(hh0, feed_dict={v0: inputUser, W: prv_w, hb: prv_hb})
+        feed = sess.run(hh0, feed_dict={v0: np.transpose(inputUser[0]), W: prv_w, hb: prv_hb})
         rec = sess.run(vv1, feed_dict={hh0: feed, W: prv_w, vb: prv_vb})
         return rec, prv_w, prv_vb, prv_hb
 
 
+    '''
+    # TODO: xem lại mục đích, cơ chế của hàm
+    # TODO: xem lại vai trò, mục đích của các tham số
+    '''
     def load_predict(self, filename, train, user):
-        vb = tf.keras.Input(shape=(self.num_vis), dtype=tf.float32) # Number of unique books
-        hb = tf.keras.Input(shape=(self.num_hid), dtype=tf.float32) # Number of features were going to learn
-        W = tf.keras.Input(shape=(self.num_vis, self.num_hid), dtype=tf.float32)  # Weight Matrix
-        v0 = tf.keras.Input(shape=(None, self.num_vis), dtype=tf.float32)
+        vb = tf.placeholder(tf.float32, [self.num_vis]) # Number of unique books
+        hb = tf.placeholder(tf.float32, [self.num_hid]) # Number of features were going to learn
+        W = tf.placeholder(tf.float32, [self.num_vis, self.num_hid])  # Weight Matrix
+        v0 = tf.placeholder(tf.float32, [None, self.num_vis])
         
         prv_w = np.load('rbm_models/'+filename+'/w.npy')
         prv_vb = np.load('rbm_models/'+filename+'/vb.npy')
@@ -152,26 +181,30 @@ class RBM(object):
         # Feeding in the User and Reconstructing the input
         hh0 = tf.nn.sigmoid(tf.matmul(v0, W) + hb)
         vv1 = tf.nn.sigmoid(tf.matmul(hh0, tf.transpose(W)) + vb)
+        # feed = sess.run(hh0, feed_dict={v0: np.transpose(inputUser[0]), W: prv_w, hb: prv_hb})
         feed = sess.run(hh0, feed_dict={v0: inputUser, W: prv_w, hb: prv_hb})
+
         rec = sess.run(vv1, feed_dict={hh0: feed, W: prv_w, vb: prv_vb})
         
         return rec, prv_w, prv_vb, prv_hb
         
 
+    '''
+    # TODO: xem lại mục đích tham số và vai trò của hàm
+    # TODO: xem lại logic, tên biến, tên trường...
+    Function to obtain recommendation scores for a user
+    using the trained weights
+    '''
     def calculate_scores(self, ratings, attractions, rec, user):
-        '''
-        Function to obtain recommendation scores for a user
-        using the trained weights
-        '''
         # Creating recommendation score for books in our data
         ratings["Recommendation Score"] = rec[0]
 
-        """ Recommend User what books he has not read yet """
-        # Find the mock user's user_id from the data
-#         cur_user_id = ratings[ratings['user_id']
+        """ Recommend User what books he/she has not read yet """
+        # ? Find the mock user's user_id from the data
+        # ? cur_user_id = ratings[ratings['user_id']
 
         # Find all books the mock user has read before
-        visited_places = ratings[ratings['user_id'] == user]['attraction_id']
+        visited_places = ratings[ratings['user_id']==user]['attraction_id']
         visited_places
 
         # converting the pandas series object into a list
@@ -181,6 +214,7 @@ class RBM(object):
         places_names = []
         places_categories = []
         places_prices = []
+
         for place in places_id:
             places_names.append(
                 attractions[attractions['attraction_id'] == place]['name'].tolist()[0])
@@ -205,6 +239,7 @@ class RBM(object):
         unseen_places_categories = []
         unseen_places_prices = []
         unseen_places_scores = []
+
         for place in grouped_unseen['attraction_id'].tolist():
             unseen_places_names.append(
                 attractions[attractions['attraction_id'] == place]['name'].tolist()[0])
@@ -235,10 +270,12 @@ class RBM(object):
         return unseen_places, seen_places
 
 
+    '''
+    # TODO: xem lại mục đích tham số và vai trò của hàm
+    # TODO: xem lại logic, tên biến, tên trường...
+    Function to export the final result for a user into csv format
+    '''
     def export(self, unseen, seen, filename, user):
-        '''
-        Function to export the final result for a user into csv format
-        '''
         # sort the result in descending order of the recommendation score
         sorted_result = unseen.sort_values(
             by='score', ascending=False)
@@ -259,6 +296,10 @@ class RBM(object):
 #         print(sorted_result)
 
 
+    '''
+    # TODO: xem lại mục đích tham số và vai trò của hàm
+    # TODO: xem lại logic, tên biến, tên trường...
+    '''
     def export_errors_plot(self, filename):
         plt.plot(self.errors)
         plt.xlabel("Epoch")
@@ -266,6 +307,10 @@ class RBM(object):
         plt.savefig(filename+"/error.png")
 
 
+    '''
+    # TODO: xem lại mục đích tham số và vai trò của hàm
+    # TODO: xem lại logic, tên biến, tên trường...
+    '''
     def export_free_energy_plot(self, filename):
         fig, ax = plt.subplots()
         ax.plot(self.energy_train, label='train')

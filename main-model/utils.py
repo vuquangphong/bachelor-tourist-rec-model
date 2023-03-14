@@ -1,38 +1,43 @@
 '''
-Utility class with some helper functions
+Utility Class chứa các function tiện ích
 '''
 
 import pandas as pd
 import numpy as np
 import random
-import os
+import constants as const
+
 
 class Util(object):
 
+    '''
+    # TODO: xem lại tên file và mục đích của ratings
+    '''
     def read_data(self, folder):
-        '''
-        Function to read data required to
-        build the recommender system
-        '''
         print("Reading the data")
         ratings = pd.read_json(folder+"attraction_reviews.json",orient='records')
         attractions = pd.read_json(folder+"attractions.json",orient='records')
         return ratings, attractions
 
+
+    '''
+    # TODO: xem lại mục đích của hàm
+    Function to clean and subset the data according    
+    to individual machine power
+    '''
     def clean_subset(self, ratings, num_rows):
-        '''
-        Function to clean and subset the data according
-        to individual machine power
-        '''
         print("Extracting num_rows from ratings")
         temp = ratings.sort_values(by=['user_id'], ascending=True)
         ratings = temp.iloc[:num_rows, :]
         return ratings
 
+
+    '''
+    # TODO: tiền xử lý dữ liệu "rating" ?
+    # TODO: xem lại mục đích của hàm
+    Preprocess data for feeding into the network
+    '''
     def preprocess(self, ratings):
-        '''
-        Preprocess data for feeding into the network
-        '''
         print("Preprocessing the dataset")
         unique_att = ratings.attraction_id.unique()
         unique_att.sort()
@@ -52,25 +57,30 @@ class Util(object):
 
         return joined, total
 
+
+    '''
+    # TODO: Chia tập dữ liệu thành training và validation
+    # TODO: xem lại mục đích của hàm
+    Function to split into training and validation sets
+    '''
     def split_data(self, total_data):
-        '''
-        Function to split into training and validation sets
-        '''
         print("Free energy required, dividing into train and validation sets")
-        random.shuffle(total_data)
-        n = len(total_data)
-        print("Total size of the data is: {0}".format(n))
-        size_train = int(n * 0.75)
+        random.shuffle(list(total_data))
+        len_data = len(total_data)
+        print("Total size of the data is: {0}".format(len_data))
+        size_train = int(len_data * const.RATIO_TRAIN_DATA)
         X_train = total_data[:size_train]
         X_valid = total_data[size_train:]
         print("Size of the training data is: {0}".format(len(X_train)))
         print("Size of the validation data is: {0}".format(len(X_valid)))
         return X_train, X_valid
 
+
+    '''
+    # TODO: Xem lại mục đích của hàm
+    Function to compute the free energy
+    '''
     def free_energy(self, v_sample, W, vb, hb):
-        '''
-        Function to compute the free energy
-        '''
         wx_b = np.dot(v_sample, W) + hb
         vbias_term = np.dot(v_sample, vb)
         hidden_term = np.sum(np.log(1 + np.exp(wx_b)), axis = 1)

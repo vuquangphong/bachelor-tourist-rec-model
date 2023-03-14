@@ -1,3 +1,7 @@
+'''
+# TODO: xem lại một số import có thể không cần thiết
+# TODO: các hàm ở dưới thì xem có "constant hóa" được cái nào thì constant lại
+'''
 import pandas as pd
 import numpy as np
 import ipywidgets as w
@@ -14,6 +18,10 @@ from PIL import Image
 from nltk.corpus import wordnet
 
 
+'''
+# TODO: xem lại mục đích và logic hàm
+# TODO: (có thể) đặt lên lại cho rõ ràng
+'''
 def f(row):
     avg_cat_rat = dict()
     for i in range(len(row['category'])):
@@ -26,6 +34,9 @@ def f(row):
     return avg_cat_rat
 
 
+'''
+# TODO: xem lại mục đích hàm
+'''
 def sim_score(row):
     score = 0.0
     match = 0
@@ -41,13 +52,24 @@ def sim_score(row):
         return 100
 
 
+'''
+# TODO: xem lại mục đích hàm
+# TODO: xem lại logic, tên biến...
+'''
 def get_recc(att_df, cat_rating):
     util = Util()
-    epochs = 50
-    rows = 40000
+    # epochs = 50
+    # rows = 40000
+    # alpha = 0.01
+    # H = 128
+    # batch_size = 16
+
+    epochs = 20
+    rows = 5000
     alpha = 0.01
     H = 128
-    batch_size = 16
+    batch_size = 8
+
     dir= 'etl/'
     ratings, attractions = util.read_data(dir)
     ratings = util.clean_subset(ratings, rows)
@@ -75,17 +97,30 @@ def get_recc(att_df, cat_rating):
     return filename, user, rbm_att
 
 
+'''
+# TODO: xem lại mục đích hàm
+'''
 def filter_df(filename, user, low, high, province, att_df):
     recc_df = pd.read_csv('rbm_models/'+filename+'/user{u}_unseen.csv'.format(u=user), index_col=0)
     recc_df.columns = ['attraction_id', 'att_name', 'att_cat', 'att_price', 'score']
     recommendation = att_df[['attraction_id','name','category','city','latitude','longitude','price','province', 'rating']].set_index('attraction_id').join(recc_df[['attraction_id','score']].set_index('attraction_id'), how="inner").reset_index().sort_values("score",ascending=False)
     
-    filtered = recommendation[(recommendation.province == province) & (recommendation.price >= low) & (recommendation.price >= low)]
+    print(recommendation)
+    print('\n')
+    
+    filtered = recommendation[(recommendation.province == province) & (recommendation.price >= low) & (recommendation.price <= high)]
+    print(filtered)
+    print('\n')
+
     url = pd.read_json('outputs/attractions_cat.json',orient='records')
     url['id'] = url.index
     with_url = filtered.set_index('attraction_id').join(url[['id','attraction']].set_index('id'), how="inner")
     return with_url
 
+
+'''
+# TODO: xem lại mục đích hàm
+'''
 def get_image(name):
     name = name.split(",")[0]
     response = google_images_download.googleimagesdownload()
@@ -112,7 +147,6 @@ def get_image(name):
         for filename in glob.glob("downloads/*jpg"):
             return filename
 
-
 def top_recc(with_url, final):
     i=0
     while(1):
@@ -129,6 +163,9 @@ def top_recc(with_url, final):
             i+=1
 
 
+'''
+# TODO: xem lại mục đích hàm
+'''
 def find_closest(with_url, loc, tod, final):
     syns1 = wordnet.synsets("evening")
     syns2 = wordnet.synsets("night")
@@ -147,6 +184,9 @@ def find_closest(with_url, loc, tod, final):
     return final
 
 
+'''
+# TODO: xem lại mục đích hàm
+'''
 def final_output(days, final):
     time = ['MORNING', 'EVENING']
     fields = ['NAME', 'CATEGORY', 'LOCATION', 'PRICE', 'RATING']
