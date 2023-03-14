@@ -19,4 +19,7 @@ let tmp = [
     "Tổ hợp thể thao, đi dạo ngắm cảnh",
     "Vui chơi, giải trí",
     "Công viên, sở thú, vui chơi, giải trí",
+    "Du lịch nghỉ dưỡng, cắm trại, bơi thuyền, ngắm cảnh",
+    "Kiến trúc, nghệ thuật",
+    
 ]

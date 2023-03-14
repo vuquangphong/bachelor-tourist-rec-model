@@ -1,0 +1,57 @@
+[
+    {
+        "attraction_id": "9bb5ab26-c21c-11ed-a7ca-996b3baab59c",
+        "name": "Hồ Đồng Đò",
+        "category": "Du lịch nghỉ dưỡng, cắm trại, bơi thuyền, ngắm cảnh",
+        "rating": 4.3,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Sóc Sơn",
+        "latitude": 21.3131243,
+        "longitude": 105.7678016
+    },
+    {
+        "attraction_id": "f40e2ee2-c21c-11ed-a7ca-996b3baab59c",
+        "name": "Điểm Cắm Trại Hồ Hàm Lợn",
+        "category": "Cắm trại, leo núi, trekking",
+        "rating": 4.0,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Sóc Sơn",
+        "latitude": 21.3034137,
+        "longitude": 105.7979736
+    },
+    {
+        "attraction_id": "006479ac-c21e-11ed-a7ca-996b3baab59c",
+        "name": "Đền Gióng Sóc Sơn",
+        "category": "Văn hóa tôn giáo, tâm linh",
+        "rating": 4.6,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Sóc Sơn",
+        "latitude": 21.290399,
+        "longitude": 105.8149652
+    },
+    {
+        "attraction_id": "5f2ba14a-c21e-11ed-a7ca-996b3baab59c",
+        "name": "Du lịch sinh thái Bản Rõm",
+        "category": "Du lịch sinh thái, cắm trại",
+        "rating": 4.6,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Sóc Sơn",
+        "latitude": 21.2759461,
+        "longitude": 105.8144829
+    },
+    {
+        "attraction_id": "98b882c0-c21e-11ed-a7ca-996b3baab59c",
+        "name": "Việt Phủ Thành Chương",
+        "category": "Kiến trúc, nghệ thuật",
+        "rating": 4.6,
+        "avg_price": 0,
+        "city": "Hà Nội",
+        "district": "Sóc Sơn",
+        "latitude": 21.2759461,
+        "longitude": 105.8144829
+    }
+]
