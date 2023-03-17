@@ -1,0 +1,2 @@
+RATIO_TRAIN_DATA = 0.75
+DIR_RBM_MODELS = '../rbm_models/'
