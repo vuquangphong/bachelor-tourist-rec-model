@@ -16,6 +16,7 @@ from urllib.request import Request, urlopen
 from google_images_download import google_images_download
 from PIL import Image
 from nltk.corpus import wordnet
+import constants as const
 
 
 '''
@@ -70,8 +71,13 @@ def get_recc(att_df, cat_rating):
     H = 128
     batch_size = 8
 
-    dir= 'etl/'
-    ratings, attractions = util.read_data(dir)
+    dir = const.DIR_DATA_ATTR
+    attractions_filename = const.ATTR_FILENAME
+    ratings_attr_filename = const.RATING_ATTR_FILENAME
+
+    attractions = util.read_data(dir, attractions_filename)
+    ratings = util.read_data(dir, ratings_attr_filename)
+
     ratings = util.clean_subset(ratings, rows)
     rbm_att, train = util.preprocess(ratings)
     num_vis =  len(ratings)
@@ -93,29 +99,21 @@ def get_recc(att_df, cat_rating):
     filename = "e"+str(epochs)+"_r"+str(rows)+"_lr"+str(alpha)+"_hu"+str(H)+"_bs"+str(batch_size)
     reco, weights, vb, hb = rbm.load_predict(filename,train,user)
     unseen, seen = rbm.calculate_scores(ratings, attractions, reco, user)
-    rbm.export(unseen, seen, 'rbm_models/'+filename, str(user))
+    rbm.export(unseen, seen, const.DIR_RBM_MODELS + filename, str(user))
     return filename, user, rbm_att
 
 
 '''
 # TODO: xem lại mục đích hàm
 '''
-def filter_df(filename, user, low, high, province, att_df):
-    recc_df = pd.read_csv('rbm_models/'+filename+'/user{u}_unseen.csv'.format(u=user), index_col=0)
+def filter_df(filename, user, low, high, city, att_df):
+    recc_df = pd.read_csv(const.DIR_RBM_MODELS + filename + '/user{u}_unseen.csv'.format(u=user), index_col=0)
     recc_df.columns = ['attraction_id', 'att_name', 'att_cat', 'att_price', 'score']
-    recommendation = att_df[['attraction_id','name','category','city','latitude','longitude','price','province', 'rating']].set_index('attraction_id').join(recc_df[['attraction_id','score']].set_index('attraction_id'), how="inner").reset_index().sort_values("score",ascending=False)
+    recommendation = att_df[['attraction_id','name','category','city','latitude','longitude','avg_price', 'rating']].set_index('attraction_id').join(recc_df[['attraction_id','score']].set_index('attraction_id'), how="inner").reset_index().sort_values("score",ascending=False)
     
-    print(recommendation)
-    print('\n')
-    
-    filtered = recommendation[(recommendation.province == province) & (recommendation.price >= low) & (recommendation.price <= high)]
-    print(filtered)
-    print('\n')
+    filtered = recommendation[(recommendation.city == city) & (recommendation.avg_price >= low) & (recommendation.avg_price <= high)]
 
-    url = pd.read_json('outputs/attractions_cat.json',orient='records')
-    url['id'] = url.index
-    with_url = filtered.set_index('attraction_id').join(url[['id','attraction']].set_index('id'), how="inner")
-    return with_url
+    return filtered
 
 
 '''
@@ -147,14 +145,24 @@ def get_image(name):
         for filename in glob.glob("downloads/*jpg"):
             return filename
 
-def top_recc(with_url, final):
+
+'''
+# TODO
+'''
+def top_recc(filtered, final):
     i=0
     while(1):
-        first_recc = with_url.iloc[[i]]
+        if i >= filtered.shape[0]:
+            # todo: do something to fill the final
+            # final.append()
+            return final
+        
+        first_recc = filtered.iloc[[i]]
+
         if(first_recc['name'].values.T[0] not in final['name']):
             final['name'].append(first_recc['name'].values.T[0])
             final['location'].append(first_recc[['latitude','longitude']].values.tolist()[0])
-            final['price'].append(first_recc['price'].values.T[0])
+            final['avg_price'].append(first_recc['avg_price'].values.T[0])
             final['rating'].append(first_recc['rating'].values.T[0])
             final['image'].append(get_image(first_recc['name'].values.T[0]))
             final['category'].append(first_recc['category'].values.T[0])
@@ -164,23 +172,27 @@ def top_recc(with_url, final):
 
 
 '''
-# TODO: xem lại mục đích hàm
+Xác định khoảng cách các địa điểm để chọn những địa điểm gần nhau trong cùng 1 ngày
 '''
-def find_closest(with_url, loc, tod, final):
-    syns1 = wordnet.synsets("evening")
-    syns2 = wordnet.synsets("night")
-    evening = [word.lemmas()[0].name() for word in syns1] + [word.lemmas()[0].name() for word in syns2]
+def find_closest(filtered, loc, tod, final):
+    # todo: wordnet dùng để tạo ra các từ liên quan tới 'evening' và 'night' nhưng hiện tại chưa cần dùng đến
+    # syns1 = wordnet.synsets("evening")
+    # syns2 = wordnet.synsets("night")
+    # evening = [word.lemmas()[0].name() for word in syns1] + [word.lemmas()[0].name() for word in syns2]
+        
     distance = list()
-    for i in with_url[['latitude','longitude']].values.tolist():
+    for i in filtered[['latitude','longitude']].values.tolist():
         distance.append(math.sqrt((loc[0]-i[0])**2 + (loc[1]-i[1])**2))
-    with_dist = with_url
+    with_dist = filtered
     with_dist["distance"] = distance
-    sorted_d = with_dist.sort_values(['distance','price'], ascending=['True','False'])
-    if tod == "Evening":
-        mask = sorted_d.name.apply(lambda x: any(j in x for j in evening))
-    else:
-        mask = sorted_d.name.apply(lambda x: all(j not in x for j in evening))
-    final = top_recc(sorted_d[mask], final)
+    sorted_d = with_dist.sort_values(['distance','avg_price'], ascending=[True, False])
+
+    # if tod == "Evening":
+    #     mask = sorted_d.name.apply(lambda x: any(j in x for j in evening))
+    # else:
+    #     mask = sorted_d.name.apply(lambda x: all(j not in x for j in evening))
+
+    final = top_recc(sorted_d, final)
     return final
 
 
@@ -189,7 +201,7 @@ def find_closest(with_url, loc, tod, final):
 '''
 def final_output(days, final):
     time = ['MORNING', 'EVENING']
-    fields = ['NAME', 'CATEGORY', 'LOCATION', 'PRICE', 'RATING']
+    fields = ['NAME', 'CATEGORY', 'LOCATION', 'AVG_PRICE', 'RATING']
     recommendations = ['Recommendation 1:', 'Recommendation 2:']
 
     box_layout = Layout(justify_content='space-between',
@@ -205,11 +217,25 @@ def final_output(days, final):
     tab = []
     for i in range(days):
         images = final['image'][i*4:(i+1)*4]
+
+        # check None in images
+        images = list(map(lambda item: const.DIR_NO_IMAGE if item is None else item, images))
+
+        if len(images) < 4:
+            while len(images) < 4:
+                images.append(const.DIR_NO_IMAGE)
+
         images = [open(i, "rb").read() for i in images]
         name = [re.sub('_',' ',i).capitalize() for i in final['name'][i*4:(i+1)*4]]
+
+        print('name:')
+        print(i)
+        print(name)
+        print('\n')
+
         category = [re.sub('_',' ',i).capitalize() for i in final['category'][i*4:(i+1)*4]]
         location = ["("+str(i[0])+","+str(i[1])+")" for i in final['location'][i*4:(i+1)*4]]
-        price = [str(i) for i in final['price'][i*4:(i+1)*4]]
+        avg_price = [str(i) for i in final['avg_price'][i*4:(i+1)*4]]
         rating = [str(i) for i in final['rating'][i*4:(i+1)*4]]
         tab.append(VBox(children=
                         [HBox(children=
@@ -220,7 +246,7 @@ def final_output(days, final):
                                      widgets.HTML(description=fields[0], value=f"<b><font color='black'>{name[0]}</b>", disabled=True), 
                                      widgets.HTML(description=fields[1], value=f"<b><font color='black'>{category[0]}</b>", disabled=True),
                                      widgets.HTML(description=fields[2], value=f"<b><font color='black'>{location[0]}</b>", disabled=True), 
-                                     widgets.HTML(description=fields[3], value=f"<b><font color='black'>{price[0]}</b>", disabled=True), 
+                                     widgets.HTML(description=fields[3], value=f"<b><font color='black'>{avg_price[0]}</b>", disabled=True), 
                                      widgets.HTML(description=fields[4], value=f"<b><font color='black'>{rating[0]}</b>", disabled=True)
                                     ], layout=column_layout), 
                                 VBox(children=
@@ -230,7 +256,7 @@ def final_output(days, final):
                                      widgets.HTML(description=fields[0], value=f"<b><font color='black'>{name[2]}</b>", disabled=True), 
                                      widgets.HTML(description=fields[1], value=f"<b><font color='black'>{category[2]}</b>", disabled=True),
                                      widgets.HTML(description=fields[2], value=f"<b><font color='black'>{location[2]}</b>", disabled=True), 
-                                     widgets.HTML(description=fields[3], value=f"<b><font color='black'>{price[2]}</b>", disabled=True), 
+                                     widgets.HTML(description=fields[3], value=f"<b><font color='black'>{avg_price[2]}</b>", disabled=True), 
                                      widgets.HTML(description=fields[4], value=f"<b><font color='black'>{rating[2]}</b>", disabled=True)
                                     ], layout=column_layout)
                               ], layout=box_layout),
@@ -242,7 +268,7 @@ def final_output(days, final):
                                      widgets.HTML(description=fields[0], value=f"<b><font color='black'>{name[1]}</b>", disabled=True), 
                                      widgets.HTML(description=fields[1], value=f"<b><font color='black'>{category[1]}</b>", disabled=True),
                                      widgets.HTML(description=fields[2], value=f"<b><font color='black'>{location[1]}</b>", disabled=True), 
-                                     widgets.HTML(description=fields[3], value=f"<b><font color='black'>{price[1]}</b>", disabled=True), 
+                                     widgets.HTML(description=fields[3], value=f"<b><font color='black'>{avg_price[1]}</b>", disabled=True), 
                                      widgets.HTML(description=fields[4], value=f"<b><font color='black'>{rating[1]}</b>", disabled=True)
                                     ], layout=column_layout), 
                                 VBox(children=
@@ -251,7 +277,7 @@ def final_output(days, final):
                                      widgets.HTML(description=fields[0], value=f"<b><font color='black'>{name[3]}</b>", disabled=True), 
                                      widgets.HTML(description=fields[1], value=f"<b><font color='black'>{category[3]}</b>", disabled=True),
                                      widgets.HTML(description=fields[2], value=f"<b><font color='black'>{location[3]}</b>", disabled=True), 
-                                     widgets.HTML(description=fields[3], value=f"<b><font color='black'>{price[3]}</b>", disabled=True), 
+                                     widgets.HTML(description=fields[3], value=f"<b><font color='black'>{avg_price[3]}</b>", disabled=True), 
                                      widgets.HTML(description=fields[4], value=f"<b><font color='black'>{rating[3]}</b>", disabled=True)
                                     ], layout=column_layout),
                               ], layout=box_layout)
