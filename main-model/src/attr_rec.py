@@ -196,9 +196,7 @@ def find_closest(filtered, loc, tod, final):
     return final
 
 
-'''
-# TODO: xem lại mục đích hàm
-'''
+
 def final_output(days, final):
     time = ['MORNING', 'EVENING']
     fields = ['NAME', 'CATEGORY', 'LOCATION', 'AVG_PRICE', 'RATING']
