@@ -65,7 +65,7 @@
         </div>
       </div>
 
-      <div class="categories-container">
+      <div class="categories-container" v-if="dataCategories.length > 0">
         <div class="title">
           <div class="main-title">Chọn danh mục du lịch</div>
           <div class="detail-title">
@@ -80,7 +80,13 @@
             v-for="(cate, index) in dataCategories"
             :key="index"
           >
-            <input type="checkbox" :name="cate" :id="index" />
+            <input
+              type="checkbox"
+              :name="cate"
+              :id="index"
+              :value="cate"
+              @input="handleChooseCategories"
+            />
             <label :for="index">{{ cate }}</label>
           </div>
         </div>
@@ -109,7 +115,7 @@
         </div>
       </div>
 
-      <div class="final-output">
+      <div class="final-output" v-if="dataFinal.length > 0">
         <div class="big-title">Đề xuất của chúng tôi</div>
 
         <div class="output-container">
@@ -247,15 +253,26 @@
         </div>
       </div>
     </div>
+
+    <div class="loading">
+      <Loader :isLoading="isLoading" />
+    </div>
   </div>
 </template>
 
 <script>
 import { reactive, toRefs } from "vue";
 import LeftBar from "@/components/LeftBar.vue";
+import Loader from "@/components/LoaderLoading.vue";
+import { getDataApi, postDataApi } from "@/utils/fetchApi";
+import { uuidv4 } from "@/utils/commonFunc";
 
 export default {
-  components: { LeftBar },
+  components: { LeftBar, Loader },
+
+  mounted() {
+    this.getDataCities();
+  },
 
   setup() {
     const state = reactive({
@@ -266,195 +283,93 @@ export default {
         budget: 0,
       },
 
-      dataCities: [
-        "Hà Nội",
-        "TP. Hồ Chí Minh",
-        "Hải Phòng",
-        "Đà Nẵng",
-        "Cần Thơ",
-      ],
+      dataCities: [],
 
       dataNumDays: [1, 2, 3, 4],
 
-      dataCategories: [
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-      ],
+      dataCategories: [],
 
-      dataCategoriesPreference: [
-        {
-          name: "category 1",
-          rating: 5,
-          id: "9dee6f59-d06e-11ed-8957-aa2db87e6710",
-        },
-        {
-          name: "category 1",
-          rating: 5,
-          id: "c83002cb-d06e-11ed-bfc4-aa2db87e6710",
-        },
-        {
-          name: "category 1",
-          rating: 5,
-          id: "cf7b1fe6-d06e-11ed-bd7c-aa2db87e6710",
-        },
-        {
-          name: "category 1",
-          rating: 5,
-          id: "d9042c60-d06e-11ed-b085-aa2db87e6710",
-        },
-        {
-          name: "category 1",
-          rating: 5,
-          id: "e01c314d-d06e-11ed-b43c-aa2db87e6710",
-        },
-      ],
+      dataCategoriesPreference: [],
 
-      dataRawFinal: {
-        timeofday: [
-          "Morning",
-          "Morning",
-          "Evening",
-          "Evening",
-          "Morning",
-          "Morning",
-          "Evening",
-          "Evening",
-        ],
-        image: [],
-        name: [
-          "Cháo Hồng Lương Sử",
-          "Nguyen Art Gallery - Vietnam Artworks & Paintings",
-          "PHỞ GÀ VĂN MIẾU 17",
-          "Cafe Goethe",
-          "Cộng Cà Phê đường Điện Biên Phủ",
-          "Bảo tàng Lịch sử Quân sự Việt Nam",
-          "Vườn hoa Lênin",
-          "Bảo tàng Mỹ thuật Việt Nam",
-        ],
-        location: [
-          [21.0252021, 105.8361315],
-          [21.0279933, 105.8362406],
-          [21.0289115, 105.8375611],
-          [21.0304661, 105.8366466],
-          [21.0339522, 105.8379675],
-          [21.0325549, 105.8393124],
-          [21.0315717, 105.8392123],
-          [21.0306889, 105.837908],
-        ],
-        avg_price: [0, 0, 0, 0, 0, 0, 0, 0],
-        rating: [4.3, 4.7, 4.7, 4.2, 4.2, 4.2, 4.3, 4.2],
-        category: [
-          "Ẩm thực, nghỉ ngơi",
-          "Triển lãm, nghệ thuật",
-          "Ẩm thực, nghỉ ngơi",
-          "Đồ uống, thư giãn",
-          "Đồ uống, thư giãn",
-          "Văn hóa, lịch sử, nghệ thuật",
-          "Đi dạo, ngắm cảnh",
-          "Văn hóa, lịch sử, nghệ thuật",
-        ],
-      },
+      dataFinal: [],
 
-      dataFinal: [
-        [
-          {
-            name: "Cháo Hồng Lương Sử",
-            image: "none",
-            location: [21.0252021, 105.8361315],
-            avg_price: 0,
-            rating: 4.3,
-            category: "Ẩm thực, nghỉ ngơi",
-          },
-          {
-            name: "Cháo Hồng Lương Sử 1",
-            image: "none",
-            location: [21.0252021, 105.8361315],
-            avg_price: 0,
-            rating: 4.3,
-            category: "Ẩm thực, nghỉ ngơi",
-          },
-          {
-            name: "Cháo Hồng Lương Sử 2",
-            image: "none",
-            location: [21.0252021, 105.8361315],
-            avg_price: 0,
-            rating: 4.3,
-            category: "Ẩm thực, nghỉ ngơi",
-          },
-          {
-            name: "Cháo Hồng Lương Sử 3",
-            image: "none",
-            location: [21.0252021, 105.8361315],
-            avg_price: 0,
-            rating: 4.3,
-            category: "Ẩm thực, nghỉ ngơi",
-          },
-        ],
-        [
-          {
-            name: "Cháo Hồng Lương Sử",
-            image: "none",
-            location: [21.0252021, 105.8361315],
-            avg_price: 0,
-            rating: 4.3,
-            category: "Ẩm thực, nghỉ ngơi",
-          },
-          {
-            name: "Cháo Hồng Lương Sử 1",
-            image: "none",
-            location: [21.0252021, 105.8361315],
-            avg_price: 0,
-            rating: 4.3,
-            category: "Ẩm thực, nghỉ ngơi",
-          },
-          {
-            name: "Cháo Hồng Lương Sử 2",
-            image: "none",
-            location: [21.0252021, 105.8361315],
-            avg_price: 0,
-            rating: 4.3,
-            category: "Ẩm thực, nghỉ ngơi",
-          },
-          {
-            name: "Cháo Hồng Lương Sử 3",
-            image: "none",
-            location: [21.0252021, 105.8361315],
-            avg_price: 0,
-            rating: 4.3,
-            category: "Ẩm thực, nghỉ ngơi",
-          },
-        ],
-      ],
+      isLoading: false,
     });
 
     return { ...toRefs(state) };
   },
 
   methods: {
-    userRefSubmit() {
-      console.log(this.userReference);
+    async getDataCities() {
+      this.isLoading = true;
+      try {
+        const res = await getDataApi("/attractions/cities");
+        this.dataCities = res.data;
+        this.isLoading = false;
+      } catch (err) {
+        this.isLoading = false;
+        console.log(err);
+      }
     },
 
-    submitCategories() {
-      console.log(this.dataCategoriesPreference);
+    async userRefSubmit() {
+      this.isLoading = true;
+
+      try {
+        const res = await getDataApi("/attractions/categories");
+        this.dataCategories = res.data;
+        this.isLoading = false;
+      } catch (err) {
+        this.isLoading = false;
+
+        console.log(err);
+      }
+    },
+
+    handleChooseCategories(event) {
+      if (event.target.checked) {
+        this.dataCategoriesPreference.push({
+          id: uuidv4(),
+          name: event.target._value,
+          rating: 5,
+        });
+      } else {
+        this.dataCategoriesPreference = this.dataCategoriesPreference.filter(
+          (cate) => cate.name !== event.target._value
+        );
+      }
+    },
+
+    async submitCategories() {
+      if (this.dataCategoriesPreference.length < 5) {
+        alert("Bạn hãy chọn ít nhất 5 danh mục và xếp hạng chúng");
+      } else {
+        this.isLoading = true;
+
+        let payload = {
+          city: this.userReference.destination,
+          bottom_budget: 0,
+          top_budget: this.userReference.budget,
+          number_of_days: this.userReference.numberOfDays,
+          user_name: this.userReference.username,
+        };
+
+        let cat_rating = {};
+        this.dataCategoriesPreference.forEach(
+          (item) => (cat_rating[item.name] = item.rating)
+        );
+
+        payload["cat_rating"] = cat_rating;
+
+        try {
+          const res = await postDataApi("/attractions", payload);
+          this.dataFinal = res.data;
+          this.isLoading = false;
+        } catch (err) {
+          this.isLoading = false;
+          console.log(err);
+        }
+      }
     },
   },
 };
@@ -546,6 +461,8 @@ select#num-days {
 
 .rating-container label {
   padding-right: 10px;
+  display: inline-block;
+  width: 210px;
 }
 
 .rating-container span {

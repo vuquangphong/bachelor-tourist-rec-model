@@ -53,7 +53,7 @@
         </div>
       </div>
 
-      <div class="categories-container">
+      <div class="categories-container" v-if="dataCategories.length > 0">
         <div class="title">
           <div class="main-title">Chọn các tiện nghi của khách sạn</div>
           <div class="detail-title">
@@ -67,7 +67,13 @@
             v-for="(cate, index) in dataCategories"
             :key="index"
           >
-            <input type="checkbox" :name="cate" :id="index" />
+            <input
+              type="checkbox"
+              :name="cate"
+              :id="index"
+              :value="cate"
+              @input="handleChooseCategories"
+            />
             <label :for="index">{{ cate }}</label>
           </div>
         </div>
@@ -77,7 +83,7 @@
         </div>
       </div>
 
-      <div class="final-output">
+      <div class="final-output" v-if="dataFinal.length > 0">
         <div class="big-title">Đề xuất của chúng tôi</div>
 
         <div class="output-container">
@@ -126,15 +132,21 @@
         </div>
       </div>
     </div>
+
+    <div class="loading">
+      <Loader :isLoading="isLoading" />
+    </div>
   </div>
 </template>
 
 <script>
 import { reactive, toRefs } from "vue";
 import LeftBar from "@/components/LeftBar.vue";
+import Loader from "@/components/LoaderLoading.vue";
+import { getDataApi, postDataApi } from "@/utils/fetchApi";
 
 export default {
-  components: { LeftBar },
+  components: { LeftBar, Loader },
 
   setup() {
     const state = reactive({
@@ -146,133 +158,64 @@ export default {
 
       dataNumDays: [1, 2, 3, 4],
 
-      dataCategories: [
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-        "category 1",
-      ],
+      dataCategories: [],
 
-      dataCategoriesPreference: [
-        {
-          name: "category 1",
-          rating: 5,
-          id: "9dee6f59-d06e-11ed-8957-aa2db87e6710",
-        },
-        {
-          name: "category 1",
-          rating: 5,
-          id: "c83002cb-d06e-11ed-bfc4-aa2db87e6710",
-        },
-        {
-          name: "category 1",
-          rating: 5,
-          id: "cf7b1fe6-d06e-11ed-bd7c-aa2db87e6710",
-        },
-        {
-          name: "category 1",
-          rating: 5,
-          id: "d9042c60-d06e-11ed-b085-aa2db87e6710",
-        },
-        {
-          name: "category 1",
-          rating: 5,
-          id: "e01c314d-d06e-11ed-b43c-aa2db87e6710",
-        },
-      ],
+      dataCategoriesPreference: [],
 
-      dataRawFinal: {
-        timeofday: [
-          "Morning",
-          "Morning",
-          "Evening",
-          "Evening",
-          "Morning",
-          "Morning",
-          "Evening",
-          "Evening",
-        ],
-        image: [],
-        name: [
-          "Cháo Hồng Lương Sử",
-          "Nguyen Art Gallery - Vietnam Artworks & Paintings",
-          "PHỞ GÀ VĂN MIẾU 17",
-          "Cafe Goethe",
-          "Cộng Cà Phê đường Điện Biên Phủ",
-          "Bảo tàng Lịch sử Quân sự Việt Nam",
-          "Vườn hoa Lênin",
-          "Bảo tàng Mỹ thuật Việt Nam",
-        ],
-        location: [
-          [21.0252021, 105.8361315],
-          [21.0279933, 105.8362406],
-          [21.0289115, 105.8375611],
-          [21.0304661, 105.8366466],
-          [21.0339522, 105.8379675],
-          [21.0325549, 105.8393124],
-          [21.0315717, 105.8392123],
-          [21.0306889, 105.837908],
-        ],
-        avg_price: [0, 0, 0, 0, 0, 0, 0, 0],
-        rating: [4.3, 4.7, 4.7, 4.2, 4.2, 4.2, 4.3, 4.2],
-        category: [
-          "Ẩm thực, nghỉ ngơi",
-          "Triển lãm, nghệ thuật",
-          "Ẩm thực, nghỉ ngơi",
-          "Đồ uống, thư giãn",
-          "Đồ uống, thư giãn",
-          "Văn hóa, lịch sử, nghệ thuật",
-          "Đi dạo, ngắm cảnh",
-          "Văn hóa, lịch sử, nghệ thuật",
-        ],
-      },
+      dataFinal: [],
 
-      dataFinal: [
-        {
-          name: "Cháo Hồng Lương Sử",
-          location: [21.0252021, 105.8361315],
-          address: "tây hồ",
-          avg_price: 0,
-          rating: 4.3,
-          experience: "Excellent",
-        },
-        {
-          name: "Cháo Hồng Lương Sử",
-          location: [21.0252021, 105.8361315],
-          address: "tây hồ",
-          avg_price: 0,
-          rating: 4.3,
-          experience: "Excellent",
-        },
-      ],
+      isLoading: false,
     });
 
     return { ...toRefs(state) };
   },
 
   methods: {
-    userRefSubmit() {
-      console.log(this.userReference);
+    async userRefSubmit() {
+      this.isLoading = true;
+
+      try {
+        const res = await getDataApi("/hotels/amenities");
+        this.dataCategories = res.data;
+        this.isLoading = false;
+      } catch (err) {
+        this.isLoading = false;
+        console.log(err);
+      }
     },
 
-    submitCategories() {
-      console.log(this.dataCategoriesPreference);
+    handleChooseCategories(event) {
+      if (event.target.checked) {
+        this.dataCategoriesPreference.push(event.target._value);
+      } else {
+        this.dataCategoriesPreference = this.dataCategoriesPreference.filter(
+          (cate) => cate !== event.target._value
+        );
+      }
+    },
+
+    async submitCategories() {
+      if (this.dataCategoriesPreference.length < 5) {
+        alert("Bạn hãy chọn ít nhất 5 độ tiện nghi");
+      } else {
+        this.isLoading = true;
+
+        let payload = {
+          city: this.userReference.destination,
+          number_of_days: this.userReference.numberOfDays,
+          user_name: this.userReference.username,
+          amenities_pref: this.dataCategoriesPreference,
+        };
+
+        try {
+          const res = await postDataApi("/hotels", payload);
+          this.dataFinal = res.data;
+          this.isLoading = false;
+        } catch (err) {
+          this.isLoading = false;
+          console.log(err);
+        }
+      }
     },
   },
 };
