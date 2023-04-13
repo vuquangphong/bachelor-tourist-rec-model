@@ -77,7 +77,7 @@ def model_train(spark, usr_rating):
     (training,validation) = comb_df.randomSplit([0.8,0.2])
 
     ranks=[4,8,12]
-    error = 20000
+    error = 20
     errors = []
 
     for i in ranks:
@@ -88,6 +88,7 @@ def model_train(spark, usr_rating):
     
     # RMSE - Root Mean Squared Error
     # Kiểm tra sự tương đồng giữa actual values và predicted values
+    print(predictions)
     rmse = evaluator.evaluate(predictions)
     errors.append(rmse)
     

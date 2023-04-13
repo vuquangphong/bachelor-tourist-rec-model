@@ -16,16 +16,11 @@ import constants as const
 
 
 '''
-# TODO: xem lại mục đích của các hàm và cơ chế bên trong RBMs
 RBM class which implement RBM model for the system
 '''
 class RBM(object):
     '''
     constructor
-    # TODO: xem lại mục đích các properties
-    # ? alpha
-    # ? H
-    # num_vis: number of visible rows
     '''
     def __init__(self, alpha, H, num_vis):
         self.alpha = alpha
@@ -37,8 +32,6 @@ class RBM(object):
 
 
     '''
-    # TODO: xem lại mục đích các tham số
-    # TODO: xem lại cơ chế, luồng training
     '''
     def training(self, train, valid, user, epochs, batchsize, free_energy, verbose, filename):
         vb = tf.placeholder(tf.float32, [self.num_vis]) # Number of unique books
@@ -85,6 +78,7 @@ class RBM(object):
         # Previous weight
         prv_w = np.random.normal(loc=0, scale=0.01,
                                 size=[self.num_vis, self.num_hid])
+        
         # Previous visible unit biases
         prv_vb = np.zeros([self.num_vis], np.float32)
 
@@ -158,8 +152,6 @@ class RBM(object):
 
 
     '''
-    # TODO: xem lại mục đích, cơ chế của hàm
-    # TODO: xem lại vai trò, mục đích của các tham số
     '''
     def load_predict(self, filename, train, user):
         vb = tf.placeholder(tf.float32, [self.num_vis]) # Number of unique books
@@ -184,10 +176,10 @@ class RBM(object):
         vv1 = tf.nn.sigmoid(tf.matmul(hh0, tf.transpose(W)) + vb)
 
         # Dòng feed thứ nhất dùng để train ở rbm_training.ipynb
-        # feed = sess.run(hh0, feed_dict={v0: np.transpose(inputUser[0]), W: prv_w, hb: prv_hb}) 
+        feed = sess.run(hh0, feed_dict={v0: np.transpose(inputUser[0]), W: prv_w, hb: prv_hb}) 
         
         # Dòng feed thứ hai dùng để chạy ở get_attr_rec.ipynb
-        feed = sess.run(hh0, feed_dict={v0: inputUser, W: prv_w, hb: prv_hb})
+        # feed = sess.run(hh0, feed_dict={v0: inputUser, W: prv_w, hb: prv_hb})
 
         rec = sess.run(vv1, feed_dict={hh0: feed, W: prv_w, vb: prv_vb})
         
@@ -195,8 +187,6 @@ class RBM(object):
         
 
     '''
-    # TODO: xem lại mục đích tham số và vai trò của hàm
-    # TODO: xem lại logic, tên biến, tên trường...
     Function to obtain recommendation scores for a user
     using the trained weights
     '''
@@ -237,7 +227,7 @@ class RBM(object):
 
         # grouping the unread data on book id and taking the mean of the recommendation scores for each book_id
         grouped_unseen = unseen_with_score.groupby('attraction_id', as_index=False)['Recommendation Score'].max()
-        display(grouped_unseen.head())
+        display(grouped_unseen)
         
         # getting the names and authors of the unread books
         unseen_places_names = []
@@ -276,8 +266,6 @@ class RBM(object):
 
 
     '''
-    # TODO: xem lại mục đích tham số và vai trò của hàm
-    # TODO: xem lại logic, tên biến, tên trường...
     Function to export the final result for a user into csv format
     '''
     def export(self, unseen, seen, filename, user):
@@ -302,8 +290,7 @@ class RBM(object):
 
 
     '''
-    # TODO: xem lại mục đích tham số và vai trò của hàm
-    # TODO: xem lại logic, tên biến, tên trường...
+    Xuất khẩu error ra ảnh
     '''
     def export_errors_plot(self, filename):
         plt.plot(self.errors)
@@ -313,8 +300,7 @@ class RBM(object):
 
 
     '''
-    # TODO: xem lại mục đích tham số và vai trò của hàm
-    # TODO: xem lại logic, tên biến, tên trường...
+    xuất khẩu free energy ra ảnh
     '''
     def export_free_energy_plot(self, filename):
         fig, ax = plt.subplots()

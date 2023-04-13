@@ -356,7 +356,7 @@ export default {
 
         let cat_rating = {};
         this.dataCategoriesPreference.forEach(
-          (item) => (cat_rating[item.name] = item.rating)
+          (item) => (cat_rating[item.name] = parseInt(item.rating))
         );
 
         payload["cat_rating"] = cat_rating;
@@ -491,7 +491,8 @@ select#num-days {
 }
 
 .final-output .main-rec .place-container-left {
-  margin-right: 80px;
+  min-width: 500px;
+  width: 500px;
 }
 
 .final-output .main-rec span.key {

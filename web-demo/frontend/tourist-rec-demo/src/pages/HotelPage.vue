@@ -335,7 +335,8 @@ select#num-days {
 }
 
 .final-output .main-rec .place-container-left {
-  margin-right: 80px;
+  min-width: 500px;
+  width: 500px;
 }
 
 .final-output span.key {

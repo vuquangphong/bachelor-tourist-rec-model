@@ -29,7 +29,7 @@ export default {
   background-color: transparent;
   height: 50px;
   width: 50px;
-  background: url("https://raw.githubusercontent.com/vuquangphong/misa-web12-vuejs-mf1050-phongvq/master/web12-tcdn-amis/src/assets/loading.svg?token=GHSAT0AAAAAAB6UUBBADWTFDDEXR6WQZIEUZBORQTQ")
+  background: url("../assets/loading.svg")
     no-repeat center center;
   background-size: 50px;
   -webkit-animation: spin 1.3s linear infinite;

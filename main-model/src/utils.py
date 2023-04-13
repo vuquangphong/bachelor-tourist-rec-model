@@ -33,8 +33,7 @@ class Util(object):
 
 
     '''
-    # TODO: tiền xử lý dữ liệu "rating" ?
-    # TODO: xem lại mục đích của hàm
+    Tiền xử lý dữ liệu "rating"
     Preprocess data for feeding into the network
     '''
     def preprocess(self, ratings):
@@ -59,7 +58,6 @@ class Util(object):
 
 
     '''
-    # TODO: xem lại mục đích của hàm
     Function to split into training and validation sets
     '''
     def split_data(self, total_data):
@@ -76,7 +74,6 @@ class Util(object):
 
 
     '''
-    # TODO: Xem lại mục đích của hàm
     Function to compute the free energy
     '''
     def free_energy(self, v_sample, W, vb, hb):
