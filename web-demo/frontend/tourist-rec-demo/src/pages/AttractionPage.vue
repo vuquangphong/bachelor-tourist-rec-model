@@ -10,14 +10,6 @@
 
         <div class="content">
           <div class="left">
-            <div class="username">
-              <label for="username">Tên người dùng</label>
-              <input
-                type="text"
-                id="username"
-                v-model="userReference.username"
-              />
-            </div>
             <div class="destination">
               <label for="destination">Điểm đến (Tỉnh/TP)</label>
               <select
@@ -33,6 +25,11 @@
                   {{ city }}
                 </option>
               </select>
+            </div>
+
+            <div class="budget">
+              <label for="budget">Kinh phí (VND)</label>
+              <input type="number" v-model="userReference.budget" />
             </div>
 
             <div class="submit-btn">
@@ -56,10 +53,6 @@
                   {{ num }} ngày
                 </option>
               </select>
-            </div>
-            <div class="budget">
-              <label for="budget">Kinh phí (VND)</label>
-              <input type="number" v-model="userReference.budget" />
             </div>
           </div>
         </div>
@@ -115,7 +108,8 @@
         </div>
       </div>
 
-      <div class="final-output" v-if="dataFinal.length > 0">
+      <!-- <div class="final-output" v-if="dataFinal.length > 0"> -->
+      <div class="final-output">
         <div class="big-title">Đề xuất của chúng tôi</div>
 
         <div class="output-container">
@@ -184,6 +178,8 @@
                   </div>
                 </div>
               </div>
+
+              <div class="maps-display-rec-1" :class="index"></div>
             </div>
 
             <!-- Gợi ý 2 -->
@@ -244,8 +240,19 @@
                   </div>
                 </div>
               </div>
+              <div class="maps-display-rec-2" :class="index"></div>
             </div>
           </div>
+        </div>
+
+        <div class="maps">
+          <BaseMap
+            :startLat="21.027763"
+            :startLng="105.83416"
+            :endLat="10.823099"
+            :endLng="106.629664"
+            :refMap="'ref'"
+          />
         </div>
 
         <div class="wishing">
@@ -264,11 +271,12 @@
 import { reactive, toRefs } from "vue";
 import LeftBar from "@/components/LeftBar.vue";
 import Loader from "@/components/LoaderLoading.vue";
+import BaseMap from "@/components/BaseMap.vue";
 import { getDataApi, postDataApi } from "@/utils/fetchApi";
 import { uuidv4 } from "@/utils/commonFunc";
 
 export default {
-  components: { LeftBar, Loader },
+  components: { LeftBar, Loader, BaseMap },
 
   mounted() {
     this.getDataCities();
@@ -277,7 +285,7 @@ export default {
   setup() {
     const state = reactive({
       userReference: {
-        username: "",
+        username: "vqphong",
         destination: "",
         numberOfDays: 0,
         budget: 0,
@@ -291,7 +299,76 @@ export default {
 
       dataCategoriesPreference: [],
 
-      dataFinal: [],
+      dataFinal: [
+        [
+          {
+            avg_price: 0,
+            category: "Trung tâm thương mại",
+            image: "none",
+            location: [21.0067932, 105.8318891],
+            name: "Vincom Center Phạm Ngọc Thạch",
+            rating: 4.3,
+          },
+          {
+            avg_price: 0,
+            category: "Ẩm thực, nghỉ ngơi",
+            image: "none",
+            location: [21.0089939, 105.8331489],
+            name: "Bánh Đúc Nóng Trung Tự",
+            rating: 4.3,
+          },
+          {
+            avg_price: 0,
+            category: "Ẩm thực, nghỉ ngơi",
+            image: "none",
+            location: [21.0118036, 105.8293716],
+            name: "Bánh Mỳ Ô Long",
+            rating: 4,
+          },
+          {
+            avg_price: 0,
+            category: "Văn hóa tôn giáo, tâm linh",
+            image: "none",
+            location: [21.0085227, 105.8280883],
+            name: "Chùa Bộc",
+            rating: 4.5,
+          },
+        ],
+        [
+          {
+            avg_price: 0,
+            category: "Đi dạo, ngắm cảnh",
+            image: "none",
+            location: [21.0401322, 105.8459797],
+            name: "Vườn Hoa Hàng Đậu",
+            rating: 4.3,
+          },
+          {
+            avg_price: 0,
+            category: "Đi dạo, ngắm cảnh",
+            image: "none",
+            location: [21.0407825, 105.8472994],
+            name: "Bốt Nước Hàng Đậu",
+            rating: 4.3,
+          },
+          {
+            avg_price: 0,
+            category: "Ẩm thực, nghỉ ngơi",
+            image: "none",
+            location: [21.0423087, 105.8473552],
+            name: "Bánh cuốn Bà Xuân",
+            rating: 4.2,
+          },
+          {
+            avg_price: 0,
+            category: "Đồ uống, thư giãn",
+            image: "none",
+            location: [21.041025, 105.8445068],
+            name: "All Day Coffee 55 Hàng Bún",
+            rating: 4.5,
+          },
+        ],
+      ],
 
       isLoading: false,
     });
@@ -376,6 +453,10 @@ export default {
 </script>
 
 <style scoped>
+#map {
+  height: 300px;
+}
+
 .home-container {
   display: flex;
 }
@@ -412,23 +493,23 @@ export default {
   margin-right: 90px;
 }
 
-.user-detail .content .username,
+.user-detail .content .destination,
 .user-detail .content .time {
   margin-bottom: 5px;
 }
 
-.user-detail .content .username label,
+.user-detail .content .destination label,
 .user-detail .content .time label {
-  padding-right: 40px;
+  padding-right: 28px;
 }
 
-.user-detail .content .destination,
+.user-detail .content .budget,
 .rating-categories {
   margin-bottom: 10px;
 }
 
-.user-detail .content .destination label {
-  padding-right: 15px;
+.user-detail .content .budget label {
+  padding-right: 60px;
 }
 
 select#destination {
@@ -437,10 +518,6 @@ select#destination {
 
 select#num-days {
   width: 163px;
-}
-
-.user-detail .content .budget label {
-  padding-right: 9px;
 }
 
 .categories-container .detail-title {

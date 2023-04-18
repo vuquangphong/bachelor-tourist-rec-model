@@ -176,10 +176,10 @@ class RBM(object):
         vv1 = tf.nn.sigmoid(tf.matmul(hh0, tf.transpose(W)) + vb)
 
         # Dòng feed thứ nhất dùng để train ở rbm_training.ipynb
-        feed = sess.run(hh0, feed_dict={v0: np.transpose(inputUser[0]), W: prv_w, hb: prv_hb}) 
+        # feed = sess.run(hh0, feed_dict={v0: np.transpose(inputUser[0]), W: prv_w, hb: prv_hb}) 
         
         # Dòng feed thứ hai dùng để chạy ở get_attr_rec.ipynb
-        # feed = sess.run(hh0, feed_dict={v0: inputUser, W: prv_w, hb: prv_hb})
+        feed = sess.run(hh0, feed_dict={v0: inputUser, W: prv_w, hb: prv_hb})
 
         rec = sess.run(vv1, feed_dict={hh0: feed, W: prv_w, vb: prv_vb})
         
