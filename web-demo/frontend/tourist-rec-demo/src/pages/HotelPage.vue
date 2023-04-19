@@ -140,6 +140,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { reactive, toRefs } from "vue";
 import LeftBar from "@/components/LeftBar.vue";
 import Loader from "@/components/LoaderLoading.vue";

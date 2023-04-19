@@ -32,6 +32,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 export default {
   data() {
     return {

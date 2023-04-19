@@ -108,8 +108,7 @@
         </div>
       </div>
 
-      <!-- <div class="final-output" v-if="dataFinal.length > 0"> -->
-      <div class="final-output">
+      <div class="final-output" v-if="dataFinal.length > 0">
         <div class="big-title">Đề xuất của chúng tôi</div>
 
         <div class="output-container">
@@ -178,8 +177,10 @@
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div class="maps-display-rec-1" :class="index"></div>
+            <div class="maps-display">
+              <BaseMap :firstMarker="day[0]" :secondMarker="day[1]" />
             </div>
 
             <!-- Gợi ý 2 -->
@@ -240,21 +241,18 @@
                   </div>
                 </div>
               </div>
-              <div class="maps-display-rec-2" :class="index"></div>
+            </div>
+
+            <div class="maps-display">
+              <BaseMap :firstMarker="day[2]" :secondMarker="day[3]" />
             </div>
           </div>
         </div>
 
-        <div class="maps">
-          <BaseMap
-            :startLat="21.027763"
-            :startLng="105.83416"
-            :endLat="10.823099"
-            :endLng="106.629664"
-            :refMap="'ref'"
-          />
+        <div class="note">
+          <span style="font-weight: 600">Lưu ý: </span>
+          <span>Dữ liệu tọa độ chỉ mang tính gần đúng, các bạn hãy kết hợp sử dụng tên địa điểm và Google Maps để có được kết quả chính xác nhất!</span>
         </div>
-
         <div class="wishing">
           Chúc các bạn có một chuyến đi vui vẻ và đáng nhớ!
         </div>
@@ -268,12 +266,13 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { reactive, toRefs } from "vue";
 import LeftBar from "@/components/LeftBar.vue";
 import Loader from "@/components/LoaderLoading.vue";
-import BaseMap from "@/components/BaseMap.vue";
 import { getDataApi, postDataApi } from "@/utils/fetchApi";
 import { uuidv4 } from "@/utils/commonFunc";
+import BaseMap from "@/components/BaseMap.vue";
 
 export default {
   components: { LeftBar, Loader, BaseMap },
@@ -299,76 +298,7 @@ export default {
 
       dataCategoriesPreference: [],
 
-      dataFinal: [
-        [
-          {
-            avg_price: 0,
-            category: "Trung tâm thương mại",
-            image: "none",
-            location: [21.0067932, 105.8318891],
-            name: "Vincom Center Phạm Ngọc Thạch",
-            rating: 4.3,
-          },
-          {
-            avg_price: 0,
-            category: "Ẩm thực, nghỉ ngơi",
-            image: "none",
-            location: [21.0089939, 105.8331489],
-            name: "Bánh Đúc Nóng Trung Tự",
-            rating: 4.3,
-          },
-          {
-            avg_price: 0,
-            category: "Ẩm thực, nghỉ ngơi",
-            image: "none",
-            location: [21.0118036, 105.8293716],
-            name: "Bánh Mỳ Ô Long",
-            rating: 4,
-          },
-          {
-            avg_price: 0,
-            category: "Văn hóa tôn giáo, tâm linh",
-            image: "none",
-            location: [21.0085227, 105.8280883],
-            name: "Chùa Bộc",
-            rating: 4.5,
-          },
-        ],
-        [
-          {
-            avg_price: 0,
-            category: "Đi dạo, ngắm cảnh",
-            image: "none",
-            location: [21.0401322, 105.8459797],
-            name: "Vườn Hoa Hàng Đậu",
-            rating: 4.3,
-          },
-          {
-            avg_price: 0,
-            category: "Đi dạo, ngắm cảnh",
-            image: "none",
-            location: [21.0407825, 105.8472994],
-            name: "Bốt Nước Hàng Đậu",
-            rating: 4.3,
-          },
-          {
-            avg_price: 0,
-            category: "Ẩm thực, nghỉ ngơi",
-            image: "none",
-            location: [21.0423087, 105.8473552],
-            name: "Bánh cuốn Bà Xuân",
-            rating: 4.2,
-          },
-          {
-            avg_price: 0,
-            category: "Đồ uống, thư giãn",
-            image: "none",
-            location: [21.041025, 105.8445068],
-            name: "All Day Coffee 55 Hàng Bún",
-            rating: 4.5,
-          },
-        ],
-      ],
+      dataFinal: [],
 
       isLoading: false,
     });
@@ -584,5 +514,32 @@ select#num-days {
 
 .rec-first {
   margin-bottom: 15px;
+}
+
+.maps-display {
+  width: 870px !important;
+  height: 400px !important;
+  margin-bottom: 50px !important;
+  margin-top: 10px !important;
+}
+
+.maps-display .vue-map-container {
+  height: 100%;
+}
+
+.maps-display .vue-map-container .vue-map {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.wishing {
+  font-weight: 600;
+  font-size: large;
+}
+
+.note {
+  font-size: large;
+  margin-top: 50px;
+  margin-bottom: 20px;
 }
 </style>
