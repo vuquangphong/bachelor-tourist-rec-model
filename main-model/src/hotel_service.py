@@ -78,7 +78,9 @@ def get_final_output(city, usrid_s2, model):
 
     final_hotel_df = hotel_df.join(u_tempdf, "id")
     hotel_sugg = final_hotel_df.where(final_hotel_df.city == city)
-    recc = hotel_sugg.dropna().toPandas()
+    hotel_sugg.createOrReplaceTempView('hotel_df_sugg_view')
+    sugg_view = spark.sql('select distinct * from hotel_df_sugg_view')
+    recc = sugg_view.dropna().toPandas()
 
     final = dict()
     # final['address'] = recc[:5]['address'].values.tolist()
