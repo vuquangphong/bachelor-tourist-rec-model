@@ -9,6 +9,11 @@ DIR_IMAGE = '../assets/images/'
 DIR_NO_IMAGE = '../assets/images/noimage.jpg'
 
 HOTEL_REC_APP_NAME = 'hotel_rec'
-DIR_DATA_HOTEL = '../data/hotel/hotels.json'
-DIR_DATA_HOTEL_AMENITIES = '../data/hotel/hotels_amenities.json'
-DIR_DATA_HOTEL_REVIEWS = '../data/hotel/user_review.json'
+
+# DIR_DATA_HOTEL = '../data/hotel/hotels.json'
+# DIR_DATA_HOTEL_AMENITIES = '../data/hotel/hotels_amenities.json'
+# DIR_DATA_HOTEL_REVIEWS = '../data/hotel/user_review.json'
+
+DIR_DATA_HOTEL = '../data/hotel_vi/hotels.json'
+DIR_DATA_HOTEL_AMENITIES = '../data/hotel_vi/hotels_amenities.json'
+DIR_DATA_HOTEL_REVIEWS = '../data/hotel_vi/user_review.json'

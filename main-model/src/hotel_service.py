@@ -41,9 +41,11 @@ def get_hotel_rec(data_req):
         hotel['name'] = final_hotels.get('name')[i]
         hotel['price'] = round(final_hotels.get('price')[i], 2)
         hotel['rating'] = final_hotels.get('rating')[i]
-        hotel['experience'] = final_hotels.get('experience')[i]
-        hotel['location'] = final_hotels.get('location')[i]
-        hotel['address'] = final_hotels.get('address')[i]
+        # hotel['experience'] = final_hotels.get('experience')[i]
+
+        location = final_hotels.get('location')[i].split(', ')
+        hotel['location'] = [float(location[0]), float(location[1])]
+        # hotel['address'] = final_hotels.get('address')[i]
 
         res.append(hotel)
 
@@ -70,19 +72,22 @@ def get_model_hotel(amenities_pref):
 
 def get_final_output(city, usrid_s2, model): 
     u_tempdf = get_hotel_recc(spark, usrid_s2, model)
-    final_hotel_df = hotel_df.join(u_tempdf, "id").withColumn("address",functions.lower(functions.col("address")))
-    user_location = city.lower()
-    hotel_sugg = final_hotel_df.where(final_hotel_df.address.contains(user_location))
+    # final_hotel_df = hotel_df.join(u_tempdf, "id").withColumn("address",functions.lower(functions.col("address")))
+    # user_location = city.lower()
+    # hotel_sugg = final_hotel_df.where(final_hotel_df.address.contains(user_location))
+
+    final_hotel_df = hotel_df.join(u_tempdf, "id")
+    hotel_sugg = final_hotel_df.where(final_hotel_df.city == city)
     recc = hotel_sugg.dropna().toPandas()
 
     final = dict()
-    final['address'] = recc[:5]['address'].values.tolist()
+    # final['address'] = recc[:5]['address'].values.tolist()
     final['amenities'] = recc[:5]['amenities'].values.T.tolist()
-    final['experience'] = recc[:5]['hotel_experience'].values.tolist()
+    # final['experience'] = recc[:5]['hotel_experience'].values.tolist()
     final['name'] = recc[:5]['hotel_name'].values.tolist()
     final['rating'] = recc[:5]['hotel_rating'].values.tolist()
     final['location'] = [i[1:-1] for i in recc[:5]['location'].values.tolist()]
     final['price'] = recc[:5]['price'].values.tolist()
-    final['image'] = [get_image(i) for i in recc[:5]['hotel_name'].values.tolist()]
+    # final['image'] = [get_image(i) for i in recc[:5]['hotel_name'].values.tolist()]
 
     return final

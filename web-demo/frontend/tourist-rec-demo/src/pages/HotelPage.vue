@@ -10,14 +10,14 @@
 
         <div class="content">
           <div class="left">
-            <div class="username">
+            <!-- <div class="username">
               <label for="username">Tên người dùng</label>
               <input
                 type="text"
                 id="username"
                 v-model="userReference.username"
               />
-            </div>
+            </div> -->
             <div class="destination">
               <label for="destination">Điểm đến (Tỉnh/TP)</label>
               <input
@@ -101,9 +101,9 @@
               <div class="place-price">
                 <span class="key">GIÁ TRUNG BÌNH </span>
                 <span class="value">{{
-                  hotel["avg_price"] <= 0
+                  hotel["price"] <= 0
                     ? "Không có thông tin"
-                    : hotel["avg_price"]
+                    : hotel["price"]
                 }}</span>
               </div>
               <div class="place-location">
@@ -111,18 +111,22 @@
                 <span class="value">{{ hotel.rating }}</span>
               </div>
 
-              <div class="place-rating">
+              <!-- <div class="place-rating">
                 <span class="key">TRẢI NGHIỆM </span>
                 <span class="value">{{ hotel.experience }}</span>
-              </div>
+              </div> -->
               <div class="place-rating">
                 <span class="key">VỊ TRÍ </span>
                 <span class="value">{{ hotel.location }}</span>
               </div>
-              <div class="place-rating">
+              <!-- <div class="place-rating">
                 <span class="key">ĐỊA CHỈ </span>
                 <span class="value">{{ hotel.address }}</span>
-              </div>
+              </div> -->
+            </div>
+
+            <div class="maps-display">
+              <BaseMap :firstMarker="hotel" :secondMarker="hotel" />
             </div>
           </div>
         </div>
@@ -145,15 +149,16 @@ import { reactive, toRefs } from "vue";
 import LeftBar from "@/components/LeftBar.vue";
 import Loader from "@/components/LoaderLoading.vue";
 import { getDataApi, postDataApi } from "@/utils/fetchApi";
+import BaseMap from "@/components/BaseMap.vue";
 
 export default {
-  components: { LeftBar, Loader },
+  components: { LeftBar, Loader, BaseMap },
 
   setup() {
     const state = reactive({
       userReference: {
         username: "",
-        destination: "",
+        destination: "Hà Nội",
         numberOfDays: 0,
       },
 
@@ -352,5 +357,32 @@ select#num-days {
 
 .rec-first {
   margin-bottom: 15px;
+}
+
+.maps-display {
+  width: 870px !important;
+  height: 400px !important;
+  margin-bottom: 50px !important;
+  margin-top: 10px !important;
+}
+
+.maps-display .vue-map-container {
+  height: 100%;
+}
+
+.maps-display .vue-map-container .vue-map {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.wishing {
+  font-weight: 600;
+  font-size: large;
+}
+
+.note {
+  font-size: large;
+  margin-top: 50px;
+  margin-bottom: 20px;
 }
 </style>

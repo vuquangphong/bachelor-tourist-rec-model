@@ -32,6 +32,62 @@ export default {
     };
     this.center["title"] = this.firstMarker.name;
 
+    // if (this.firstMarker) {
+    //   if (typeof this.firstMarker.location === "string") {
+    //     let tempLocation = this.firstMarker.location.split(", ");
+    //     console.log({
+    //       position: {
+    //         lat: parseFloat(tempLocation[0]),
+    //         lng: parseFloat(tempLocation[1]),
+    //       },
+    //       title: this.firstMarker.name,
+    //     });
+    //     this.markers.push({
+    //       position: {
+    //         lat: parseFloat(tempLocation[0]),
+    //         lng: parseFloat(tempLocation[1]),
+    //       },
+    //       title: this.firstMarker.name,
+    //     });
+    //   } else {
+    //     this.markers.push({
+    //       position: {
+    //         lat: this.firstMarker.location[0],
+    //         lng: this.firstMarker.location[1],
+    //       },
+    //       title: this.firstMarker.name,
+    //     });
+    //   }
+    // }
+
+    // if (this.secondMarker) {
+    //   if (typeof this.secondMarker.location === "string") {
+    //     let tempLocation = this.secondMarker.location.split(", ");
+    //     console.log({
+    //       position: {
+    //         lat: parseFloat(tempLocation[0]),
+    //         lng: parseFloat(tempLocation[1]),
+    //       },
+    //       title: this.secondMarker.name,
+    //     });
+    //     this.markers.push({
+    //       position: {
+    //         lat: parseFloat(tempLocation[0]),
+    //         lng: parseFloat(tempLocation[1]),
+    //       },
+    //       title: this.secondMarker.name,
+    //     });
+    //   } else {
+    //     this.markers.push({
+    //       position: {
+    //         lat: this.secondMarker.location[0],
+    //         lng: this.secondMarker.location[1],
+    //       },
+    //       title: this.secondMarker.name,
+    //     });
+    //   }
+    // }
+
     this.markers.push({
       position: {
         lat: this.firstMarker.location[0],

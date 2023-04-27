@@ -119,7 +119,7 @@ def get_hotel_recc(spark, usrid_s2, als_model):
     
     u_id_df = spark.read.json(const.DIR_DATA_HOTEL_REVIEWS)
     u_id_df.createOrReplaceTempView('u_id_df')
-    u_tempdf = spark.sql("SELECT u_id_df.id FROM u_id_df INNER JOIN get_attid on u_id_df.att_id=get_attid.att_id")
+    u_tempdf = spark.sql("SELECT u_id_df.att_id AS id FROM u_id_df INNER JOIN get_attid on u_id_df.att_id=get_attid.att_id")
     
     return u_tempdf
 
@@ -185,9 +185,9 @@ def get_hotel_output(days, final):
         name = final['name'][i]
         price= final['price'][i]
         rating= final['rating'][i]
-        experience= final['experience'][i]
+        # experience= final['experience'][i]
         loc=final['location'][i]
-        address=final['address'][i]
+        # address=final['address'][i]
         amenities=final['amenities'][i]
         tab.append(w.VBox(children=
                         [
@@ -195,9 +195,9 @@ def get_hotel_output(days, final):
                          w.HTML(description=fields[0], value=f"<b><font color='black'>{name}</b>", disabled=True),
                          w.HTML(description=fields[1], value=f"<b><font color='black'>{price}</b>", disabled=True),
                          w.HTML(description=fields[2], value=f"<b><font color='black'>{rating}</b>", disabled=True), 
-                         w.HTML(description=fields[3], value=f"<b><font color='black'>{experience}</b>", disabled=True), 
+                        #  w.HTML(description=fields[3], value=f"<b><font color='black'>{experience}</b>", disabled=True), 
                          w.HTML(description=fields[4], value=f"<b><font color='black'>{loc}</b>", disabled=True),
-                         w.HTML(description=fields[5], value=f"<b><font color='black'>{address}</b>", disabled=True)
+                        #  w.HTML(description=fields[5], value=f"<b><font color='black'>{address}</b>", disabled=True)
                         ], layout=column_layout))
 
     tab_recc = w.Tab(children=tab)
