@@ -47,8 +47,8 @@ def sim_score(row):
 
 def get_recc(att_df, cat_rating):
     util = Util()
-    epochs = 50
-    rows = 10000
+    epochs = 20
+    rows = 5000
     alpha = 0.01
     H = 128
     batch_size = 16
@@ -71,32 +71,87 @@ def get_recc(att_df, cat_rating):
     num_vis =  len(ratings)
     rbm = RBM(alpha, H, num_vis)
     
+    # Join 2 DF ratings và attractions (lấy thêm cột category cho ratings và sắp xếp lại theo attraction_id)
     joined = ratings.set_index('attraction_id').join(attractions[["attraction_id", "category"]].set_index("attraction_id")).reset_index('attraction_id')
+
+    # Nhóm joined lại theo user_id
     grouped = joined.groupby('user_id')
+
+    # DF về category lấy từ grouped 
+    # (mỗi hàng của DF tương ứng với 1 user_id khác nhau)
+    # (nghĩa là ứng với mỗi một người dùng khác nhau)
+    # (cột category là một list gồm các danh mục du lịch mà user đó đã xếp hạng)
     category_df = grouped['category'].apply(list).reset_index()
+    
+    # DF về ratings lấy từ grouped
+    # (ý nghĩa tương tự DF về category)
     rating_df = grouped['rating'].apply(list).reset_index()
+    
+    # Gộp lại của category_df và rating_df
     cat_rat_df = category_df.set_index('user_id').join(rating_df.set_index('user_id'))
+    
+    # vẫn là cat_rat_df nhưng có thêm cột cat_rat
+    # cột này là một dict, có cấu trúc tương tự cat_rating
+    # cột này là tổng hợp lại 2 cột còn lại, 
+    # các key là các giá trị phân biệt của cột category, 
+    # các giá trị là trung bình cộng của cột rating ứng với từng category
     cat_rat_df['cat_rat'] = cat_rat_df.apply(f,axis=1)
+
+    # cat_rat_df giờ chỉ có 2 cột user_id và cat_rat
     cat_rat_df = cat_rat_df.reset_index()[['user_id','cat_rat']]
     
+    # cat_rat_df giờ có thêm cột user_data lấy từ cat_rating là input từ phía người dùng hiện tại
     cat_rat_df['user_data'] = [cat_rating for i in range(len(cat_rat_df))]
+    
+    # cat_rat_df giờ có thêm cột sim_score, 
+    # giá trị cột này tính thông qua hàm sim_score() ở phía trên
+    # tham số là các giá trị của các cột cat_rat và user_data
+    # sim_score là Simple matching score => đánh giá mức độ tương đồng của 2 dict trong trường hợp này
+    # sim_score càng nhỏ thì càng tương đồng (theo cách tính của hàm sim_score() phía trên)
     cat_rat_df['sim_score'] = cat_rat_df.apply(sim_score, axis=1)
+
+    # Lấy ra id của user có sim_score nhỏ nhất (tương đồng với người dùng hiện tại nhất)
     user = cat_rat_df.sort_values(['sim_score']).values[0][0]
     
     print("Similar User: {u}".format(u=user))
     filename = "e"+str(epochs)+"_r"+str(rows)+"_lr"+str(alpha)+"_hu"+str(H)+"_bs"+str(batch_size)
+    
+    # 
     reco, weights, vb, hb = rbm.load_predict(filename,train,user)
+    
+    # tạo file csv từ reco để phục vụ cho filter_df()
+    # unseen là kiểu gợi ý tự vẽ ra những chỗ CÓ THỂ thích (vì là unseen)
+    # seen là kiểu gợi ý những chỗ khá chắc chắn như ý (vì đã seen rồi)
     unseen, seen = rbm.calculate_scores(ratings, attractions, reco, user)
     rbm.export(unseen, seen, const.DIR_RBM_MODELS + filename, str(user))
+    
     return filename, user, rbm_att
 
 
 def filter_df(filename, user, low, high, city, att_df):
-    recc_df = pd.read_csv(const.DIR_RBM_MODELS + filename + '/user{u}_unseen.csv'.format(u=user), index_col=0)
-    recc_df.columns = ['attraction_id', 'att_name', 'att_cat', 'att_price', 'score']
-    recommendation = att_df[['attraction_id','name','category','city','latitude','longitude','avg_price', 'rating']].set_index('attraction_id').join(recc_df[['attraction_id','score']].set_index('attraction_id'), how="inner").reset_index().sort_values("score",ascending=False)
+    # recc_df này chứa att_id, att_name, att_cat và att_price
+    # có thể lấy theo cái seen hoặc unseen
+    # nếu lấy unseen thì có thêm cột score
+
+    # recc_df = pd.read_csv(const.DIR_RBM_MODELS + filename + '/user{u}_unseen.csv'.format(u=user), index_col=0)
+    recc_df = pd.read_csv(const.DIR_RBM_MODELS + filename + '/user{u}_seen.csv'.format(u=user), index_col=0)
     
-    filtered = recommendation[(recommendation.city == city) & (recommendation.avg_price >= low) & (recommendation.avg_price <= high)]
+    # recc_df.columns = ['attraction_id', 'att_name', 'att_cat', 'att_price', 'score']
+    recc_df.columns = ['attraction_id', 'att_name', 'att_cat', 'att_price']
+
+    # att_df là DF raw lấy từ file attractions.json
+    # recommendation là kiểu kết hợp att_df với recc_df
+    # recommendation = att_df[['attraction_id','name','category','city','latitude','longitude','avg_price', 'rating']].set_index('attraction_id').join(recc_df[['attraction_id','score']].set_index('attraction_id'), how="inner").reset_index().sort_values("score",ascending=False)
+    recommendation = att_df[['attraction_id','name','category','city','latitude','longitude','avg_price', 'rating']].set_index('attraction_id').join(recc_df[['attraction_id']].set_index('attraction_id'), how="inner").reset_index() # đang chưa biết sort theo cái chiiii
+    
+    unseen_recc_df = pd.read_csv(const.DIR_RBM_MODELS + filename + '/user{u}_unseen.csv'.format(u=user), index_col=0)
+    unseen_recc_df.columns = ['attraction_id', 'att_name', 'att_cat', 'att_price', 'score']
+    unseen_recommendation = att_df[['attraction_id','name','category','city','latitude','longitude','avg_price', 'rating']].set_index('attraction_id').join(unseen_recc_df[['attraction_id','score']].set_index('attraction_id'), how="inner").reset_index().sort_values("score",ascending=False)
+    unseen_recommendation.pop('score')
+
+    final_recommendation = pd.concat([recommendation, unseen_recommendation])
+
+    filtered = final_recommendation[(final_recommendation.city == city) & (final_recommendation.avg_price >= low) & (final_recommendation.avg_price <= high)]
 
     return filtered
 

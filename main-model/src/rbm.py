@@ -191,7 +191,7 @@ class RBM(object):
     using the trained weights
     '''
     def calculate_scores(self, ratings, attractions, rec, user):
-        # Creating recommendation score for books in our data
+        # Creating recommendation score for books in data
         ratings["Recommendation Score"] = rec[0]
 
         """ Recommend User what books he/she has not read yet """
