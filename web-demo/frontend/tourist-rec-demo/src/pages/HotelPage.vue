@@ -27,6 +27,11 @@
               />
             </div>
 
+            <div class="budget">
+              <label for="budget">Kinh phí (VND)</label>
+              <input type="number" v-model="userReference.budget" />
+            </div>
+
             <div class="submit-btn">
               <button @click="userRefSubmit">Xác nhận</button>
             </div>
@@ -157,9 +162,10 @@ export default {
   setup() {
     const state = reactive({
       userReference: {
-        username: "",
+        username: "vqphong",
         destination: "Hà Nội",
         numberOfDays: 0,
+        budget: 1000000,
       },
 
       dataNumDays: [1, 2, 3, 4],
@@ -211,6 +217,7 @@ export default {
           number_of_days: this.userReference.numberOfDays,
           user_name: this.userReference.username,
           amenities_pref: this.dataCategoriesPreference,
+          budget: this.userReference.budget,
         };
 
         try {
@@ -291,8 +298,12 @@ select#num-days {
   width: 163px;
 }
 
+.user-detail .content .budget {
+  margin-bottom: 15px;
+}
+
 .user-detail .content .budget label {
-  padding-right: 9px;
+  padding-right: 46px;
 }
 
 .categories-container .detail-title {

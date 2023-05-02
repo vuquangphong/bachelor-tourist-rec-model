@@ -28,10 +28,11 @@ def get_hotel_rec(data_req):
     city = data_req.get('city')
     number_of_days = data_req.get('number_of_days')
     user_name = data_req.get('user_name')
+    budget = data_req.get('budget')
 
     usrid_s2, model = get_model_hotel(amenities_pref)
 
-    final_hotels = get_final_output(city, usrid_s2, model)
+    final_hotels = get_final_output(city, usrid_s2, model, budget)
 
     res = [] # containing final output
 
@@ -70,7 +71,7 @@ def get_model_hotel(amenities_pref):
     return usrid_s2, model
 
 
-def get_final_output(city, usrid_s2, model): 
+def get_final_output(city, usrid_s2, model, budget): 
     u_tempdf = get_hotel_recc(spark, usrid_s2, model)
     # final_hotel_df = hotel_df.join(u_tempdf, "id").withColumn("address",functions.lower(functions.col("address")))
     # user_location = city.lower()
@@ -81,6 +82,8 @@ def get_final_output(city, usrid_s2, model):
     hotel_sugg.createOrReplaceTempView('hotel_df_sugg_view')
     sugg_view = spark.sql('select distinct * from hotel_df_sugg_view')
     recc = sugg_view.dropna().toPandas()
+
+    recc = recc[recc.price <= budget]
 
     final = dict()
     # final['address'] = recc[:5]['address'].values.tolist()

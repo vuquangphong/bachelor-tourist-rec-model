@@ -287,7 +287,7 @@ export default {
         username: "vqphong",
         destination: "",
         numberOfDays: 0,
-        budget: 0,
+        budget: 1000000,
       },
 
       dataCities: [],
