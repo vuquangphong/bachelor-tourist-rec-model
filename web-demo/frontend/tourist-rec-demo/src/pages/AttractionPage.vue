@@ -180,7 +180,7 @@
             </div>
 
             <div class="maps-display">
-              <BaseMap :firstMarker="day[0]" :secondMarker="day[1]" />
+              <BaseMap :firstMarker="day[0]" :secondMarker="day[1]" :myMapRef="`rec1_${index}`" />
             </div>
 
             <!-- Gợi ý 2 -->
@@ -244,14 +244,17 @@
             </div>
 
             <div class="maps-display">
-              <BaseMap :firstMarker="day[2]" :secondMarker="day[3]" />
+              <BaseMap :firstMarker="day[2]" :secondMarker="day[3]" :myMapRef="`rec2_${index}`" />
             </div>
           </div>
         </div>
 
         <div class="note">
           <span style="font-weight: 600">Lưu ý: </span>
-          <span>Dữ liệu tọa độ chỉ mang tính gần đúng, các bạn hãy kết hợp sử dụng tên địa điểm và Google Maps để có được kết quả chính xác nhất!</span>
+          <span
+            >Dữ liệu tọa độ chỉ mang tính gần đúng, các bạn hãy kết hợp sử dụng
+            tên địa điểm và Google Maps để có được kết quả chính xác nhất!</span
+          >
         </div>
         <div class="wishing">
           Chúc các bạn có một chuyến đi vui vẻ và đáng nhớ!
@@ -517,19 +520,10 @@ select#num-days {
 }
 
 .maps-display {
-  width: 870px !important;
-  height: 400px !important;
+  width: 880px !important;
+  height: 440px !important;
   margin-bottom: 50px !important;
   margin-top: 10px !important;
-}
-
-.maps-display .vue-map-container {
-  height: 100%;
-}
-
-.maps-display .vue-map-container .vue-map {
-  width: 100% !important;
-  height: 100% !important;
 }
 
 .wishing {
