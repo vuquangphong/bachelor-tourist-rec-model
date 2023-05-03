@@ -12,7 +12,8 @@ app.use(router)
 app.use(pinia)
 app.use(VueGoogleMaps, {
     load: {
-        key: 'AIzaSyChKvIKcbVQKSRq3u7QJ7AIIHhYgj2wGDI'
+        key: 'AIzaSyChKvIKcbVQKSRq3u7QJ7AIIHhYgj2wGDI',
+        libraries: 'visualization'
     }
 });
 

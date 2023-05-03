@@ -131,7 +131,7 @@
             </div>
 
             <div class="maps-display">
-              <BaseMap :firstMarker="hotel" :secondMarker="hotel" />
+              <BaseMap :firstMarker="hotel" :secondMarker="hotel" :myMapRef="`hotel_${index}`" />
             </div>
           </div>
         </div>
