@@ -13,23 +13,6 @@ from pyspark.sql import Row
 from geopy.geocoders import Nominatim
 from pyspark.sql.functions import col
 import constants as const
-
-
-'''
-Hàm chuẩn hóa rating
-'''
-def get_rating(x):
-    val = x / 5
-    if x >= 0 and x <= val:
-        return 1
-    elif x > val and x <= 2*val:
-        return 2
-    elif x > 2*val and x <= 3*val:
-        return 3
-    elif x > 3*val and x <= 4*val:
-        return 4
-    else:
-        return 5
     
 
 '''

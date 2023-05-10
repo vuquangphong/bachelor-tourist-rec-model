@@ -37,7 +37,7 @@
             </div>
           </div>
 
-          <div class="right">
+          <!-- <div class="right">
             <div class="time">
               <label for="num-days">Số ngày đi</label>
               <select
@@ -54,7 +54,7 @@
                 </option>
               </select>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
 

@@ -34,18 +34,18 @@ class RBM(object):
     '''
     '''
     def training(self, train, valid, user, epochs, batchsize, free_energy, verbose, filename):
-        vb = tf.placeholder(tf.float32, [self.num_vis]) # Number of unique books
-        hb = tf.placeholder(tf.float32, [self.num_hid]) # Number of features were going to learn
+        vb = tf.placeholder(tf.float32, [self.num_vis]) # Number of unique books (visible biases)
+        hb = tf.placeholder(tf.float32, [self.num_hid]) # Number of features were going to learn (hidden biases)
         W = tf.placeholder(tf.float32, [self.num_vis, self.num_hid])  # Weight Matrix
         v0 = tf.placeholder(tf.float32, [None, self.num_vis])
 
         print("Phase 1: Input Processing")
-        _h0 = tf.nn.sigmoid(tf.matmul(v0, W) + hb)  # Visible layer activation
+        _h0 = tf.nn.sigmoid(tf.matmul(v0, W) + hb)  # Visible layer activation (by sigmoid function)
         # Gibb's Sampling
         h0 = tf.nn.relu(tf.sign(_h0 - tf.random_uniform(tf.shape(_h0))))
         
         print("Phase 2: Reconstruction")
-        _v1 = tf.nn.sigmoid(tf.matmul(h0, tf.transpose(W)) + vb)  # Hidden layer activation
+        _v1 = tf.nn.sigmoid(tf.matmul(h0, tf.transpose(W)) + vb)  # Hidden layer activation (by sigmoid function)
         v1 = tf.nn.relu(tf.sign(_v1 - tf.random_uniform(tf.shape(_v1))))
         h1 = tf.nn.sigmoid(tf.matmul(v1, W) + hb)
 
@@ -143,6 +143,7 @@ class RBM(object):
         print("Exporting errors vs epochs plot")
         self.export_errors_plot(dir_filename)
         inputUser = [train[user]]
+
         # Feeding in the User and Reconstructing the input
         hh0 = tf.nn.sigmoid(tf.matmul(v0, W) + hb)
         vv1 = tf.nn.sigmoid(tf.matmul(hh0, tf.transpose(W)) + vb)
